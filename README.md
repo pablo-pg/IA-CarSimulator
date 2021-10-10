@@ -8,7 +8,7 @@ Javier Yoendy Hernández Martín (alu0101184753@ull.edu.es)
 Pablo Pérez González (alu0101318318@ull.edu.es)
 
 ## Ejecución
-Sitúese en la carpeta del proeycto y ejecute:
+Sitúese en la carpeta del proeycto y ejecute:  
 `$ python3 main.py`
 
 ## Detalles de implementación
