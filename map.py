@@ -25,25 +25,38 @@ class Map:
   def pos(self, i, j):
     return i * self.v_size + j
 
+  def print(self):
+    img = Image.new("RGB", (test.h_size, test.v_size))
+    pixels = img.load()
+    for i in range(test.h_size):
+        for j in range(test.v_size):
+            if test.matrix[test.pos(i,j)].isObstacle() == False:
+                pixels[i,j] = (255,255,255)
+
+    img = img.resize((50 * test.h_size, 50 * test.v_size), Image.NEAREST)
+    img.show()
+
 
 test = Map(10,15)
 
 test.matrix[test.pos(0,0)].is_obstacle = True
-test.matrix[test.pos(0,1)].is_obstacle = True
+test.matrix[test.pos(0,4)].is_obstacle = True
 test.matrix[test.pos(2,2)].is_obstacle = True
+test.matrix[test.pos(0,0)].is_obstacle = True
 test.matrix[test.pos(5,7)].is_obstacle = True
 test.matrix[test.pos(9,14)].is_obstacle = True
 
-# # Create new black image of entire board
-img = Image.new("RGB", (test.h_size, test.v_size))
-pixels = img.load()
+test.print()
+# # # Create new black image of entire board
+# img = Image.new("RGB", (test.h_size, test.v_size))
+# pixels = img.load()
 
-# Make pixels white where (row+col) is odd
-for i in range(test.h_size):
-    for j in range(test.v_size):
-        if test.matrix[test.pos(i,j)].isObstacle() == False:
-            pixels[i,j] = (255,255,255)
+# # Make pixels white where (row+col) is odd
+# for i in range(test.h_size):
+#     for j in range(test.v_size):
+#         if test.matrix[test.pos(i,j)].isObstacle() == False:
+#             pixels[i,j] = (255,255,255)
 
-img = img.resize((50*test.h_size,50*test.v_size), Image.NEAREST)
+# img = img.resize((50*test.h_size,50*test.v_size), Image.NEAREST)
 
-img.show()
+# img.show()

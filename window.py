@@ -8,7 +8,8 @@
 from tkinter import *
 
 def FirstWindow(root):
-  VariableRandom = BooleanVar()
+  VariableRandom = BooleanVar() # True - Random, False - Manual
+  VariableLoad = BooleanVar() # True - Load, False - Create
 
   root.title = "Estrategias de búsqueda"
 
@@ -20,33 +21,35 @@ def FirstWindow(root):
   LoadMapLabel = Label(Frame1, text="Cargar un mapa desde txt")
   LoadMapLabel.grid(row=0, sticky=N, columnspan=2)
 
-  
+  LoadButton = Radiobutton(Frame1, text="Cargar", variable=VariableLoad, value=True)
+  LoadButton.grid(row=1, sticky=N, columnspan=2)
 
   IntroduceRuteLabel = Label(Frame1, text="Ruta:" )
-  IntroduceRuteLabel.grid(row=1, column=0, sticky=W, padx=2)
+  IntroduceRuteLabel.grid(row=2, column=0, sticky=W, padx=2)
   RuteTextBox = Entry(Frame1)
-  RuteTextBox.grid(row=1, column=1, sticky=W, padx=2)
+  RuteTextBox.grid(row=2, column=1, sticky=W, padx=2)
 
-  with open(RuteTextBox) as f:
-    lines = f.readlines()
+  #with open(str(RuteTextBox)) as f:
+  #  lines = f.readlines()
   
-  linecount = 0
-  lettercount = 0
-  for line in lines:
-    linecount += 1
-    if (linecount == 1):
-      for letter in line:
-        if (letter != ''):
-          if (lettercount == 0):
-            Height += letter
-            Height = int(Height)
-          else:
-            Width += letter
-            Width = int(Width)
-        else:
-          lettercount = 1
-    else:
+  #linecount = 0
+  #lettercount = 0
+  #for line in lines:
+  #  linecount += 1
+  #  if (linecount == 1):
+  #    for letter in line:
+  #      if (letter != ''):
+  #        if (lettercount == 0):
+  #          Height += letter
+  #          Height = int(Height)
+  #        else:
+  #          Width += letter
+  #          Width = int(Width)
+  #      else:
+  #        lettercount = 1
+  #  else:
       # obstaculos
+  #    print("hola")
 
   # LoadMapButton = Button(Frame1, text="Cargar mapa", command=LoadMapAction) # Añadir command
   # LoadMapButton.grid(row=2, sticky=N, columnspan=2)
@@ -60,34 +63,37 @@ def FirstWindow(root):
   CreateMapLabel.grid(row=0, sticky=N, columnspan=3)
 
   WidthLabel = Label(Frame2, text="Ancho del mapa:")
-  WidthLabel.grid(row=1, column=0, sticky=W, padx=2)
+  WidthLabel.grid(row=2, column=0, sticky=W, padx=2)
   WidthTextBox = Entry(Frame2)
-  WidthTextBox.grid(row=1, column=1, sticky=W, padx=2)
+  WidthTextBox.grid(row=2, column=1, sticky=W, padx=2)
 
   HeightLabel = Label(Frame2, text="Alto del mapa:")
-  HeightLabel.grid(row=2, column=0, sticky=W, padx=2)
+  HeightLabel.grid(row=3, column=0, sticky=W, padx=2)
   HeightTextBox = Entry(Frame2)
-  HeightTextBox.grid(row=2, column=1, sticky=W, padx=2)
+  HeightTextBox.grid(row=3, column=1, sticky=W, padx=2)
 
   ObstacleLabel = Label(Frame2, text="Obstaculos:")
-  ObstacleLabel.grid(row=4, sticky=W)
+  ObstacleLabel.grid(row=5, sticky=W)
 
   RandomButton = Radiobutton(Frame2, text="Aleatorio", variable=VariableRandom, value = True)
-  RandomButton.grid(row=5, column=1, sticky=W)
+  RandomButton.grid(row=6, column=1, sticky=W)
   PercentageLabel = Label(Frame2, text="Porcentaje en %:")
-  PercentageLabel.grid(row=6, column=1, sticky=E, padx=2)
+  PercentageLabel.grid(row=7, column=1, sticky=E, padx=2)
   PercentageTextBox = Entry(Frame2)
-  PercentageTextBox.grid(row=6, column=2, sticky=W, padx=2)
+  PercentageTextBox.grid(row=7, column=2, sticky=W, padx=2)
 
 
   ManualButton = Radiobutton(Frame2, text="Manuales", variable=VariableRandom, value = False)
-  ManualButton.grid(row=7, column=1, sticky=W)
+  ManualButton.grid(row=8, column=1, sticky=W)
   CoordsLabel = Label(Frame2, text="Coordenadas (x1, y1) (x2, y2)")
-  CoordsLabel.grid(row=8,column=1, sticky=E, padx=2)
+  CoordsLabel.grid(row=9,column=1, sticky=E, padx=2)
   CoordsTextBox = Entry(Frame2)
-  CoordsTextBox.grid(row=8, column=2, sticky=W, padx=2)
+  CoordsTextBox.grid(row=9, column=2, sticky=W, padx=2)
 
-  CreateMapButton = Button(Frame2, text="Crear mapa") # Añadir command
-  CreateMapButton.grid(row=9, sticky=N, columnspan=3)
+  CreateButton = Radiobutton(Frame2, text="Crear", variable=VariableLoad, value=False)
+  CreateButton.grid(row=1, sticky=N, columnspan=3)
+
+  # CreateMapButton = Button(Frame2, text="Crear mapa") # Añadir command
+  # CreateMapButton.grid(row=9, sticky=N, columnspan=3)
 
   return HeightTextBox, WidthTextBox
