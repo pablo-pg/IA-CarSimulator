@@ -7,36 +7,39 @@
 
 
 from PIL import Image
-
 from cell import Cell
 
 
 
 class Map:
+
   def __init__(self, h_size, v_size):
-    self.h_size = h_size
-    self.v_size = v_size
-    self.matrix = []
+    self.h_size = h_size          # Tamaño horizontal del mapa
+    self.v_size = v_size          # Tamaño vertical del mapa
+    self.matrix = []              # Lista que será usada para representar la matriz
     for i in range(v_size):
       for j in range(h_size):
         cell = Cell(j,i)
         self.matrix.append(cell)
 
+  # Devuele la posición real de la lista pasando por parámetro posiciones x,y
   def pos(self, i, j):
     return i * self.v_size + j
 
+  # Genera un PNG con el mapa y sus obstáculos
   def print(self):
-    img = Image.new("RGB", (test.h_size, test.v_size))
+    img = Image.new("RGB", (self.h_size, self.v_size))
     pixels = img.load()
-    for i in range(test.h_size):
-        for j in range(test.v_size):
-            if test.matrix[test.pos(i,j)].isObstacle() == False:
+    # Recorre todo el mapa y si no hay obstáculo lo pinta de negro
+    for i in range(self.h_size):
+        for j in range(self.v_size):
+            if self.matrix[self.pos(i,j)].isObstacle() == False:
                 pixels[i,j] = (255,255,255)
-
-    img = img.resize((50 * test.h_size, 50 * test.v_size), Image.NEAREST)
+    # Amplía la imagen
+    img = img.resize((50 * self.h_size, 50 * self.v_size), Image.NEAREST)
     img.show()
 
-
+# Testeo de la clase
 test = Map(10,15)
 
 test.matrix[test.pos(0,0)].is_obstacle = True
@@ -47,16 +50,4 @@ test.matrix[test.pos(5,7)].is_obstacle = True
 test.matrix[test.pos(9,14)].is_obstacle = True
 
 test.print()
-# # # Create new black image of entire board
-# img = Image.new("RGB", (test.h_size, test.v_size))
-# pixels = img.load()
 
-# # Make pixels white where (row+col) is odd
-# for i in range(test.h_size):
-#     for j in range(test.v_size):
-#         if test.matrix[test.pos(i,j)].isObstacle() == False:
-#             pixels[i,j] = (255,255,255)
-
-# img = img.resize((50*test.h_size,50*test.v_size), Image.NEAREST)
-
-# img.show()
