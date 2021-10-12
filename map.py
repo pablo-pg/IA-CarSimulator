@@ -26,8 +26,8 @@ class Map:
         cell = Cell(j,i)
         self.matrix.append(cell)
 
-    self.matrix[self.pos(x_origin, y_origin)].is_origin = True
-    self.matrix[self.pos(x_end, y_end)].is_finish = True
+    self.matrix[self.pos(self.x_origin, self.y_origin)].is_origin = True
+    self.matrix[self.pos(self.x_end, self.y_end)].is_finish = True
 
   # Devuele la posición real de la lista pasando por parámetro posiciones x,y
   def pos(self, i, j):
@@ -60,5 +60,5 @@ test.matrix[test.pos(0,0)].is_obstacle = True
 test.matrix[test.pos(5,7)].is_obstacle = True
 test.matrix[test.pos(9,14)].is_obstacle = True
 
-test.print()
+# test.print()
 

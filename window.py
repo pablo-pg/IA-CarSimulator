@@ -33,7 +33,10 @@ def FirstWindow(root, Window1):
   
   # Boton en la parte inferior
   NextButton = Button(Window1, text="Siguiente", bg="#C2E7C1", command=lambda: PassToWindow2(root, Window1, VariableRandom, VariableLoad, RuteText, WidthText, HeightText, PercentageText, CoordsText, OriginXText, OriginYText, FinishXText, FinishYText))
-  NextButton.pack(side=BOTTOM, expand="True",fill=BOTH)
+  NextButton.pack(side=BOTTOM, expand="True", padx=5)
+
+  ExitButton = Button(Window1, text="Salir del programa", bg="#E49795", command=ExitProgram)
+  ExitButton.pack(side=BOTTOM, expand="True", padx=5)
 
   # Frame de la izquierda
   Frame1 = Frame(Frame3)
@@ -122,18 +125,26 @@ def FirstWindow(root, Window1):
 
 # En la segunda ventana se muestra el mapa interactivo.
 # Se podrá editar los obstáculos y puntos de partida y llegada.
-def SecondWindow(root, window2, map1):
+def SecondWindow(root, window2, maps):
   # Para ver el mapa generado antes de implementar la interfaz
-  map1.print()
+  #maps[0].print()
   #root2 = Toplevel()
   Frame1 = Frame(window2)
-  Frame1.pack(expand="True",fill=BOTH, side=LEFT)
+  Frame1.pack(expand="True", side=TOP)
   Frame1.config(bg='#F2F3F9')
 
-  for r in range(0, map1.v_size):
-    for c in range (0, map1.h_size):
-      square = Button(Frame1, text='({},{})'.format(r,c), activebackground="black", background="white")
-      square.grid(row=r, column=c)
+  Frame2 = Frame(window2)
+  Frame2.pack(side=BOTTOM)
+
+  NextButton = Button(Frame2, text="Siguiente", bg="#C2E7C1") # Implementar la siguiente ventana
+  NextButton.pack(side=RIGHT, expand="True",fill=BOTH, padx=5)
+
+  ExitButton = Button(Frame2, text="Salir del programa", bg="#E49795", command=ExitProgram)
+  ExitButton.pack(side=LEFT, expand="True",fill=BOTH, padx=5)
+
+  for r in range(0, maps[0].v_size):
+    for c in range (0, maps[0].h_size):
+      Draw_Map(Frame1,maps, r, c)
 
 # Aquí se reciben los datos de la ventana 1. 
 # Con esto, se genera el mapa con la info introducida
@@ -163,7 +174,9 @@ def PassToWindow2(root,window1,VariableRandom, VariableLoad, RuteText, WidthText
     test_map = ReadMap(RuteText_info) # No implementado
   
   else: # Se genera con los datos pasados
-    map1 = Map(WidthText_info, HeightText_info, OriginXText_info, OriginYText_info, FinishXText_info, FinishYText_info)
+    maps = []
+    maps.append(Map(WidthText_info, HeightText_info, OriginXText_info, OriginYText_info, FinishXText_info, FinishYText_info))
+    #map1 = Map(WidthText_info, HeightText_info, OriginXText_info, OriginYText_info, FinishXText_info, FinishYText_info)
     # Condiciones de los obtaculos
     if (VariableRandom_info):
       print("Random")
@@ -174,8 +187,9 @@ def PassToWindow2(root,window1,VariableRandom, VariableLoad, RuteText, WidthText
   # Evolucion de ventanas
   window1.destroy() # Cierra la ventana anterior
   Window2 = Toplevel(root) # Se genera la siguiente ventana
-  SecondWindow(root, Window2, map1)
-
+  Window2.title("Estrategias de búsqueda")
+  Window2.geometry("500x200")
+  SecondWindow(root, Window2, maps)
 
 # Funcion para leer el mapa desde el txt
 def ReadMap(RuteText):
@@ -202,3 +216,70 @@ def ReadMap(RuteText):
       # obstaculos
       print("hola")
   return #retorna el mapa generado
+
+def ChangueToNext(square, Frames, maps, r, c):
+  print("r, c", r, c)
+  # Verde -> Rojo (si no hay ya uno) -> Blanco -> Negro
+  if maps[0].matrix[maps[0].pos(c,r)].isOrigin() == True:
+    maps[0].matrix[maps[0].pos(c,r)].setWhite()
+    # Comprueba si ya hay un destino
+    finish = CheckFinish(maps[0])
+    if finish == False:
+      maps[0].matrix[maps[0].pos(c,r)].setFinish()
+    # else: se convierte en blanco
+  elif maps[0].matrix[maps[0].pos(c,r)].isFinish() == True:
+    maps[0].matrix[maps[0].pos(c,r)].setWhite()
+  elif maps[0].matrix[maps[0].pos(c,r)].isObstacle() == True:
+    maps[0].matrix[maps[0].pos(c,r)].setWhite()
+    # Comprueba si ya hay un origen
+    Origin = CheckOrigin(maps[0])
+    if Origin == False:
+      maps[0].matrix[maps[0].pos(c,r)].setOrigin()
+    # Pasa a ver si hay un final
+    finish = CheckFinish(maps[0])
+    if finish == False:
+      maps[0].matrix[maps[0].pos(c,r)].setFinish()
+  else: # Es un blanco y pasa a negro
+    maps[0].matrix[maps[0].pos(c,r)].setObstacle()
+  
+  Draw_Map(Frames, maps, r, c)
+
+  Tk.update(Frames)
+  Tk.update_idletasks(Frames)
+  #refresh(Frames[0])
+  #print("Actualizacion")
+  #maps[0].print()
+
+
+def CheckFinish(maps):
+  finish = False
+  for i in range(maps.h_size):
+    for j in range(maps.v_size):
+      if maps.matrix[maps.pos(i,j)].isFinish() == True: 
+        finish = True
+  return finish
+
+def CheckOrigin(maps):
+  Origin = False
+  for i in range(maps.h_size):
+    for j in range(maps.v_size):
+      if maps.matrix[maps.pos(i,j)].isOrigin() == True: 
+        Origin = True
+  return Origin
+
+def Draw_Map(Frame1, maps, r, c):
+  if maps[0].matrix[maps[0].pos(c,r)].isOrigin() == True:
+        square = Button(Frame1,text="I", activebackground="grey", background="green", height=1, width=2, command=lambda r=r, c=c: ChangueToNext(square, Frame1, maps, r, c)).grid(row=r, column=c)
+        # square = Button(Frame1, text='({},{}, {})'.format(r,c, "true"), activebackground="grey", background="green", command=lambda r=r, c=c: ChangueToNext(Frame1, maps, r, c))
+  elif maps[0].matrix[maps[0].pos(c,r)].isFinish() == True:
+    square = Button(Frame1, text='F',activebackground="grey", background="red", height=1, width=2, command=lambda r=r, c=c: ChangueToNext(square, Frame1, maps, r, c)).grid(row=r, column=c)
+    #square = Button(Frame1, text='({},{})'.format(r,c), activebackground="grey", background="red")
+  elif maps[0].matrix[maps[0].pos(c,r)].isObstacle() == True:
+    square = Button(Frame1, activebackground="grey", background="black", height=1, width=2, command=lambda r=r, c=c: ChangueToNext(square, Frame1, maps, r, c)).grid(row=r, column=c)
+    #square = Button(Frame1, text='({},{})'.format(r,c), activebackground="grey", background="black")
+  else:
+    square = Button(Frame1, activebackground="grey", background="white", height=1, width=2, command=lambda r=r, c=c: ChangueToNext(square, Frame1, maps, r, c)).grid(row=r, column=c)
+    #square = Button(Frame1, text='({},{})'.format(r,c), activebackground="grey", background="white")
+
+def ExitProgram():
+  raise SystemExit

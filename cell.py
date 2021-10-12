@@ -29,5 +29,17 @@ class Cell:
   def isFinish(self):
     return self.is_finish
 
+  def setObstacle(self):
+    self.is_obstacle = True
+  
+  def setOrigin(self):
+    self.is_origin = True
+  
+  def setFinish(self):
+    self.is_finish = True
 
+  def setWhite(self):
+    self.is_origin = False
+    self.is_obstacle = False
+    self.is_finish = False
 
