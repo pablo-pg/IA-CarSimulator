@@ -20,13 +20,19 @@ def FirstWindow(root, Window1):
 
   PercentageText = IntVar()
   CoordsText = StringVar()
+
+  OriginXText = IntVar()
+  OriginYText = IntVar()
+
+  FinishXText = IntVar()
+  FinishYText = IntVar()
    
   # Frame que contiene al de la izq y dcha
   Frame3 = Frame(Window1)
   Frame3.pack(side=TOP, expand="True",fill=BOTH)
   
   # Boton en la parte inferior
-  NextButton = Button(Window1, text="Siguiente", bg="#C2E7C1", command=lambda: PassToWindow2(root, Window1, VariableRandom, VariableLoad, RuteText, WidthText, HeightText, PercentageText, CoordsText))
+  NextButton = Button(Window1, text="Siguiente", bg="#C2E7C1", command=lambda: PassToWindow2(root, Window1, VariableRandom, VariableLoad, RuteText, WidthText, HeightText, PercentageText, CoordsText, OriginXText, OriginYText, FinishXText, FinishYText))
   NextButton.pack(side=BOTTOM, expand="True",fill=BOTH)
 
   # Frame de la izquierda
@@ -75,7 +81,6 @@ def FirstWindow(root, Window1):
   PercentageTextBox = Entry(Frame2, textvariable=PercentageText)
   PercentageTextBox.grid(row=6, column=2, sticky=W, padx=2)
 
-
   ManualButton = Radiobutton(Frame2, text="Manuales", variable=VariableRandom, value = False, padx=8,font=('Courier', 12))
   ManualButton.grid(row=8, column=0, sticky=W)
   CoordsLabel = Label(Frame2, text="Coordenadas\n(x1, y1) (x2, y2)")
@@ -86,23 +91,53 @@ def FirstWindow(root, Window1):
   CreateButton = Radiobutton(Frame2, text="Crear", font=('Courier',16), variable=VariableLoad, value=False)
   CreateButton.grid(row=1, sticky=N, columnspan=3)
 
-  # CreateMapButton = Button(Frame2, text="Crear mapa") # Añadir command
-  # CreateMapButton.grid(row=9, sticky=N, columnspan=3)
+  # ORIGEN
+  OriginLabel = Label(Frame2, text="Origen:", font=('Bookman', 14), pady=5)
+  OriginLabel.grid(row=9, column=0, sticky=W)
 
-  return HeightText, WidthText
+  OriginXLabel = Label(Frame2, text="Coordena X:", font=('Bookman', 12), padx=2)
+  OriginXLabel.grid(row=10, column=0)
+  OriginXTextBox = Entry(Frame2, textvariable=OriginXText)
+  OriginXTextBox.grid(row=10, column=1, sticky=W)
 
-def SecondWindow(root, window2, test_map):
+  OriginYLabel = Label(Frame2, text="Coordena Y:", font=('Bookman', 12), padx=2)
+  OriginYLabel.grid(row=11, column=0)
+  OriginYTextBox = Entry(Frame2, textvariable=OriginYText)
+  OriginYTextBox.grid(row=11, column=1, sticky=W)
+
+  # DESTINO
+  FinishLabel = Label(Frame2, text="Destino:", font=('Bookman', 14), pady=5)
+  FinishLabel.grid(row=12, column=0, sticky=W)
+
+  FinishXLabel = Label(Frame2, text="Coordena X:", font=('Bookman', 12), padx=2)
+  FinishXLabel.grid(row=13, column=0)
+  FinishXTextBox = Entry(Frame2, textvariable=FinishXText)
+  FinishXTextBox.grid(row=13, column=1, sticky=W)
+
+  FinishYLabel = Label(Frame2, text="Coordena Y:", font=('Bookman', 12), padx=2)
+  FinishYLabel.grid(row=14, column=0)
+  FinishYTextBox = Entry(Frame2, textvariable=FinishYText)
+  FinishYTextBox.grid(row=14, column=1, sticky=W)
+
+
+# En la segunda ventana se muestra el mapa interactivo.
+# Se podrá editar los obstáculos y puntos de partida y llegada.
+def SecondWindow(root, window2, map1):
+  # Para ver el mapa generado antes de implementar la interfaz
+  map1.print()
   #root2 = Toplevel()
   Frame1 = Frame(window2)
   Frame1.pack(expand="True",fill=BOTH, side=LEFT)
   Frame1.config(bg='#F2F3F9')
 
-  for r in range(0, test_map.v_size):
-    for c in range (0, test_map.h_size):
+  for r in range(0, map1.v_size):
+    for c in range (0, map1.h_size):
       square = Button(Frame1, text='({},{})'.format(r,c), activebackground="black", background="white")
       square.grid(row=r, column=c)
 
-def PassToWindow2(root,window1,VariableRandom, VariableLoad, RuteText, WidthText, HeightText, PercentageText, CoordsText):
+# Aquí se reciben los datos de la ventana 1. 
+# Con esto, se genera el mapa con la info introducida
+def PassToWindow2(root,window1,VariableRandom, VariableLoad, RuteText, WidthText, HeightText, PercentageText, CoordsText, OriginXText, OriginYText, FinishXText, FinishYText):
   # Aquí se generara el mapa
   VariableRandom_info = VariableRandom.get()
   VariableLoad_info = VariableLoad.get()
@@ -114,6 +149,12 @@ def PassToWindow2(root,window1,VariableRandom, VariableLoad, RuteText, WidthText
   PercentageText_info = PercentageText.get()
   CoordsText_info = CoordsText.get()
 
+  OriginXText_info = OriginXText.get()
+  OriginYText_info = OriginYText.get()
+
+  FinishXText_info = FinishXText.get()
+  FinishYText_info = FinishYText.get()
+
   print("Prueba: " + str(VariableRandom_info) + " " + str(VariableLoad_info) + " " + str(RuteText_info) + " " + str(WidthText_info) + " " + str(HeightText_info) + " " + str(PercentageText_info) + " " + str(CoordsText_info))
   
   # Crear aqui el mapa con las condiciones que se han pasado.
@@ -122,7 +163,7 @@ def PassToWindow2(root,window1,VariableRandom, VariableLoad, RuteText, WidthText
     test_map = ReadMap(RuteText_info) # No implementado
   
   else: # Se genera con los datos pasados
-    # map() constructor. Hacer
+    map1 = Map(WidthText_info, HeightText_info, OriginXText_info, OriginYText_info, FinishXText_info, FinishYText_info)
     # Condiciones de los obtaculos
     if (VariableRandom_info):
       print("Random")
@@ -133,8 +174,7 @@ def PassToWindow2(root,window1,VariableRandom, VariableLoad, RuteText, WidthText
   # Evolucion de ventanas
   window1.destroy() # Cierra la ventana anterior
   Window2 = Toplevel(root) # Se genera la siguiente ventana
-  test_map = Map(20, 15)
-  SecondWindow(root, Window2, test_map)
+  SecondWindow(root, Window2, map1)
 
 
 # Funcion para leer el mapa desde el txt

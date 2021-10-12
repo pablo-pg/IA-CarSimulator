@@ -13,14 +13,21 @@ from cell import Cell
 
 class Map:
 
-  def __init__(self, h_size, v_size):
+  def __init__(self, h_size = 10, v_size = 10, x_origin = 0, y_origin = 0, x_end = 1, y_end = 1):
     self.h_size = h_size          # Tamaño horizontal del mapa
     self.v_size = v_size          # Tamaño vertical del mapa
     self.matrix = []              # Lista que será usada para representar la matriz
+    self.x_origin = x_origin      # Punto de partida del coche
+    self.y_origin = y_origin
+    self.x_end = x_end                # Punto de destino del coche
+    self.y_end = y_end
     for i in range(v_size):
       for j in range(h_size):
         cell = Cell(j,i)
         self.matrix.append(cell)
+
+    self.matrix[self.pos(x_origin, y_origin)].is_origin = True
+    self.matrix[self.pos(x_end, y_end)].is_finish = True
 
   # Devuele la posición real de la lista pasando por parámetro posiciones x,y
   def pos(self, i, j):
@@ -35,6 +42,10 @@ class Map:
         for j in range(self.v_size):
             if self.matrix[self.pos(i,j)].isObstacle() == False:
                 pixels[i,j] = (255,255,255)
+            if (self.matrix[self.pos(i,j)].isOrigin() == True):
+              pixels[i,j] = (194, 231, 193)
+            if (self.matrix[self.pos(i,j)].isFinish() == True):
+              pixels[i,j] = (228, 151, 149 )
     # Amplía la imagen
     img = img.resize((50 * self.h_size, 50 * self.v_size), Image.NEAREST)
     img.show()

@@ -15,6 +15,6 @@ root.withdraw()
 
 Window1 = Toplevel(root)
 Window1.title("Estrategias de búsqueda")
-height, width = FirstWindow(root, Window1) # En realidad no tiene sentido que retorne un valor
+FirstWindow(root, Window1) # En realidad no tiene sentido que retorne un valor
 
 root.mainloop()
