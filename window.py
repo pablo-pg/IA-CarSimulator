@@ -14,18 +14,25 @@ def FirstWindow(root, Window1):
   VariableLoad = BooleanVar() # True - Load, False - Create
 
   RuteText = StringVar()
+  RuteText.set("mapa1.txt")
 
   WidthText = IntVar()
+  WidthText.set(5)
   HeightText = IntVar()
+  HeightText.set(5)
 
   PercentageText = IntVar()
   CoordsText = StringVar()
 
   OriginXText = IntVar()
+  OriginXText.set(0)
   OriginYText = IntVar()
+  OriginYText.set(0)
 
   FinishXText = IntVar()
+  FinishXText.set(3)
   FinishYText = IntVar()
+  FinishYText.set(3)
    
   # Frame que contiene al de la izq y dcha
   Frame3 = Frame(Window1)
@@ -86,10 +93,10 @@ def FirstWindow(root, Window1):
 
   ManualButton = Radiobutton(Frame2, text="Manuales", variable=VariableRandom, value = False, padx=8,font=('Courier', 12))
   ManualButton.grid(row=8, column=0, sticky=W)
-  CoordsLabel = Label(Frame2, text="Coordenadas\n(x1, y1) (x2, y2)")
-  CoordsLabel.grid(row=8,column=1, sticky=E, padx=2)
-  CoordsTextBox = Entry(Frame2, textvariable=CoordsText)
-  CoordsTextBox.grid(row=8, column=2, sticky=W, padx=2)
+  #CoordsLabel = Label(Frame2, text="Coordenadas\n(x1, y1) (x2, y2)")
+  #CoordsLabel.grid(row=8,column=1, sticky=E, padx=2)
+  #CoordsTextBox = Entry(Frame2, textvariable=CoordsText)
+  #CoordsTextBox.grid(row=8, column=2, sticky=W, padx=2)
 
   CreateButton = Radiobutton(Frame2, text="Crear", font=('Courier',16), variable=VariableLoad, value=False)
   CreateButton.grid(row=1, sticky=N, columnspan=3)
@@ -169,12 +176,14 @@ def PassToWindow2(root,window1,VariableRandom, VariableLoad, RuteText, WidthText
   print("Prueba: " + str(VariableRandom_info) + " " + str(VariableLoad_info) + " " + str(RuteText_info) + " " + str(WidthText_info) + " " + str(HeightText_info) + " " + str(PercentageText_info) + " " + str(CoordsText_info))
   
   # Crear aqui el mapa con las condiciones que se han pasado.
-  if (VariableLoad==True):
+  maps = []
+  if (VariableLoad_info==True):
     # Se lee el mapa y lo retorna a una variable
-    test_map = ReadMap(RuteText_info) # No implementado
+    print("Lee el mapa")
+    map1 = ReadMap(RuteText_info) # No implementado
+    maps.append(map1)
   
   else: # Se genera con los datos pasados
-    maps = []
     maps.append(Map(WidthText_info, HeightText_info, OriginXText_info, OriginYText_info, FinishXText_info, FinishYText_info))
     #map1 = Map(WidthText_info, HeightText_info, OriginXText_info, OriginYText_info, FinishXText_info, FinishYText_info)
     # Condiciones de los obtaculos
@@ -188,7 +197,7 @@ def PassToWindow2(root,window1,VariableRandom, VariableLoad, RuteText, WidthText
   window1.destroy() # Cierra la ventana anterior
   Window2 = Toplevel(root) # Se genera la siguiente ventana
   Window2.title("Estrategias de búsqueda")
-  Window2.geometry("500x200")
+  Window2.geometry("500x500")
   SecondWindow(root, Window2, maps)
 
 # Funcion para leer el mapa desde el txt
@@ -196,26 +205,84 @@ def ReadMap(RuteText):
   # No está probado todavía
   with open(str(RuteText)) as f:
     lines = f.readlines()
-  
+
   linecount = 0
   lettercount = 0
+
+  Height=""
+  Width=""
+  XOrigin=""
+  YOrigin=""
+  XFinish=""
+  YFinish=""
+
   for line in lines:
-    linecount += 1
-    if (linecount == 1):
+    if (linecount == 0): # Lee el tamaño del mapa
       for letter in line:
-        if (letter != ''):
+        if (letter != ' '):
           if (lettercount == 0):
             Height += letter
-            Height = int(Height)
           else:
             Width += letter
-            Width = int(Width)
         else:
-          lettercount = 1
-    else:
+          lettercount += 1
+        print("Lettercount: ", lettercount)
+        print("Alto: ", Height, "Ancho: ", Width)
+    elif (linecount == 1): # Lee las coordenadas de inicio
+      lettercount = 0
+      for letter in line:
+        if (letter != ' '):
+          if (lettercount == 0):
+            XOrigin += letter
+          else:
+            YOrigin += letter
+        else:
+          lettercount += 1
+        print("Lettercount: ", lettercount)
+        print("X Origen: ", XOrigin, "Y Origen: ", YOrigin)
+    elif (linecount == 2): # Lee las coordenadas de destino
+      lettercount = 0
+      for letter in line:
+        if (letter != ' '):
+          if (lettercount == 0):
+            XFinish += letter
+          else:
+            YFinish += letter
+        else:
+          lettercount += 1
+        print("Lettercount: ", lettercount)
+        print("X Finish: ", XFinish, "Y Finish: ", YFinish)
+    else: # Lee los obstáculos
+      linecount2 = linecount
+      lettercount = 0
+      Height = int(Height)
+      Width = int (Width)
+      XOrigin = int(XOrigin)
+      YOrigin = int(YOrigin)
+      XFinish = int(XFinish)
+      YFinish = int(YFinish)
+      # Creo el mapa para poder asignar los obstáculos
+      map1 = Map(Width, Height, XOrigin, YOrigin, XFinish, YFinish)
       # obstaculos
-      print("hola")
-  return #retorna el mapa generado
+      XCoord=""
+      YCoord=""
+      for letter in line:
+        if (letter != ' '):
+          if (lettercount == 0):
+            XCoord += letter
+          else:
+            YCoord += letter     
+        else:
+          lettercount += 1
+
+      print("Lettercount: ", lettercount)
+      print("Linecount: ", linecount)
+      print("X obstaculo: ", XCoord, "Y obstaculo: ", YCoord)
+      XCoord=int(XCoord)
+      YCoord=int(YCoord)
+      map1.SetObstacle(XCoord, YCoord)
+    linecount += 1
+  return map1
 
 def ChangueToNext(square, Frames, maps, r, c):
   print("r, c", r, c)

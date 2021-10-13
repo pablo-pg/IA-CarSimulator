@@ -49,6 +49,10 @@ class Map:
     # Amplía la imagen
     img = img.resize((50 * self.h_size, 50 * self.v_size), Image.NEAREST)
     img.show()
+  
+  # Setea obstaculos
+  def SetObstacle(self, i, j):
+    self.matrix[test.pos(i,j)].is_obstacle = True
 
 # Testeo de la clase
 test = Map(10,15)
