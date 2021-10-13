@@ -149,9 +149,14 @@ def SecondWindow(root, window2, maps):
   ExitButton = Button(Frame2, text="Salir del programa", bg="#E49795", command=ExitProgram)
   ExitButton.pack(side=LEFT, expand="True",fill=BOTH, padx=5)
 
-  for r in range(0, maps[0].v_size):
-    for c in range (0, maps[0].h_size):
-      Draw_Map(Frame1,maps, r, c)
+  if (maps[0].v_size > 35 | maps[0].h_size > 35):
+    maps[0].print()
+  else:
+    for r in range(0, maps[0].v_size):
+      for c in range (0, maps[0].h_size):
+        Draw_Map(Frame1,maps, r, c)
+  
+  
 
 # Aquí se reciben los datos de la ventana 1. 
 # Con esto, se genera el mapa con la info introducida
