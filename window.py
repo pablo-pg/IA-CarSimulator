@@ -23,7 +23,6 @@ def FirstWindow(root, Window1):
   HeightText.set(5)
 
   PercentageText = IntVar()
-  CoordsText = StringVar()
 
   OriginXText = IntVar()
   OriginXText.set(0)
@@ -40,7 +39,7 @@ def FirstWindow(root, Window1):
   Frame3.pack(side=TOP, expand="True",fill=BOTH)
   
   # Boton en la parte inferior
-  NextButton = Button(Window1, text="Siguiente", bg="#C2E7C1", command=lambda: PassToWindow2(root, Window1, VariableRandom, VariableLoad, RuteText, WidthText, HeightText, PercentageText, CoordsText, OriginXText, OriginYText, FinishXText, FinishYText))
+  NextButton = Button(Window1, text="Siguiente", bg="#C2E7C1", command=lambda: PassToWindow2(root, Window1, VariableRandom, VariableLoad, RuteText, WidthText, HeightText, PercentageText, CoordsTextBox, OriginXText, OriginYText, FinishXText, FinishYText))
   NextButton.pack(side=BOTTOM, expand="True", padx=5)
 
   ExitButton = Button(Window1, text="Salir del programa", bg="#E49795", command=ExitProgram)
@@ -94,10 +93,13 @@ def FirstWindow(root, Window1):
 
   ManualButton = Radiobutton(Frame2, text="Manuales", variable=VariableRandom, value = False, padx=8,font=('Courier', 12))
   ManualButton.grid(row=8, column=0, sticky=W)
-  #CoordsLabel = Label(Frame2, text="Coordenadas\n(x1, y1) (x2, y2)")
-  #CoordsLabel.grid(row=8,column=1, sticky=E, padx=2)
-  #CoordsTextBox = Entry(Frame2, textvariable=CoordsText)
-  #CoordsTextBox.grid(row=8, column=2, sticky=W, padx=2)
+  CoordsLabel = Label(Frame2, text="Coordenadas\nx1 y1\nx2 y2")
+  CoordsLabel.grid(row=8,column=1, sticky=E, padx=2)
+  CoordsTextBox = Text(Frame2, width=16,height=5)#,textvariable=CoordsText)
+  CoordsTextBox.grid(row=8, column=2, sticky=W, padx=2)
+  scrollVert=Scrollbar(Frame2, command=CoordsTextBox.yview)
+  scrollVert.grid(row=8, column=2, padx=2, sticky="nse")
+  CoordsTextBox.config(yscrollcommand=scrollVert.set)
 
   CreateButton = Radiobutton(Frame2, text="Crear", font=('Courier',16), variable=VariableLoad, value=False)
   CreateButton.grid(row=1, sticky=N, columnspan=3)
@@ -134,15 +136,19 @@ def FirstWindow(root, Window1):
 # En la segunda ventana se muestra el mapa interactivo.
 # Se podrá editar los obstáculos y puntos de partida y llegada.
 def SecondWindow(root, window2, maps):
-  # Para ver el mapa generado antes de implementar la interfaz
-  #ScrollBar1 = Scrollbar(window2, orient=HORIZONTAL)
-  #ScrollBar1.pack(side=TOP, fill=X)
-  #ScrollBar2 = Scrollbar(window2, orient=VERTICAL)
-  #ScrollBar2.pack(side=RIGHT, fill=Y)
+  
 
+  # Para ver el mapa generado antes de implementar la interfaz
   Frame1 = Frame(window2)
   Frame1.pack(expand="False", fill=BOTH, side=TOP)
   Frame1.config(height="500", width="500")
+
+  #ScrollBar1 = Scrollbar(window2, command=window2.yview)
+  #ScrollBar1.pack(side=TOP, fill=X)
+  #window2.config(xscrollcommand=ScrollBar1.set)
+  #ScrollBar2 = Scrollbar(window2, command=window2.xview)
+  #ScrollBar2.pack(side=RIGHT, fill=Y)
+  #window2.config(yscrollcommand=ScrollBar2.set)
 
   Frame2 = Frame(window2)
   Frame2.pack(side=BOTTOM)
@@ -171,7 +177,7 @@ def SecondWindow(root, window2, maps):
   
 # Aquí se reciben los datos de la ventana 1. 
 # Con esto, se genera el mapa con la info introducida
-def PassToWindow2(root,window1,VariableRandom, VariableLoad, RuteText, WidthText, HeightText, PercentageText, CoordsText, OriginXText, OriginYText, FinishXText, FinishYText):
+def PassToWindow2(root,window1,VariableRandom, VariableLoad, RuteText, WidthText, HeightText, PercentageText, CoordsTextBox, OriginXText, OriginYText, FinishXText, FinishYText):
   # Aquí se generara el mapa
   VariableRandom_info = VariableRandom.get()
   VariableLoad_info = VariableLoad.get()
@@ -181,13 +187,16 @@ def PassToWindow2(root,window1,VariableRandom, VariableLoad, RuteText, WidthText
   HeightText_info = HeightText.get()
 
   PercentageText_info = PercentageText.get()
-  CoordsText_info = CoordsText.get()
 
   OriginXText_info = OriginXText.get()
   OriginYText_info = OriginYText.get()
 
   FinishXText_info = FinishXText.get()
   FinishYText_info = FinishYText.get()
+
+  InputValue=CoordsTextBox.get("1.0","end-1c")
+
+  print("Cuadro de texto: ",InputValue)
 
   #print("Prueba: " + str(VariableRandom_info) + " " + str(VariableLoad_info) + " " + str(RuteText_info) + " " + str(WidthText_info) + " " + str(HeightText_info) + " " + str(PercentageText_info) + " " + str(CoordsText_info))
   
@@ -206,6 +215,7 @@ def PassToWindow2(root,window1,VariableRandom, VariableLoad, RuteText, WidthText
     else: # Se entran manual
       # Si me sale bien lo de clickar, quitamos esta opcion
       map1 = Map(WidthText_info, HeightText_info, OriginXText_info, OriginYText_info, FinishXText_info, FinishYText_info)
+      map1 = ReadObstacles(InputValue, map1)
       print("Manual")
   maps.append(map1)
 
@@ -324,6 +334,37 @@ def ReadMap(RuteText):
       map1.obsCount()
       # map1.print()
     linecount += 1
+  return map1
+
+def ReadObstacles(InputValue, map1):
+  linecount = 0
+  lettercount = 0
+  
+  lettercount = 0
+  XCoord=""
+  YCoord=""
+  obstacles = []
+  InputValue = str(InputValue)
+  for letter in InputValue.len:
+    if (letter != ' ') and (letter != "\n"):
+      if (lettercount == 0):
+        XCoord += letter
+      else:
+        YCoord += letter     
+    else:
+      lettercount += 1
+  obstacles.append([XCoord, YCoord])
+  print("Lettercount: ", lettercount)
+  print("Linecount: ", linecount)
+  print("X obstaculo: ", XCoord, "Y obstaculo: ", YCoord)
+  # XCoord=int(XCoord)
+  # YCoord=int(YCoord)
+  print(obstacles)
+  map1.SetObstacle(XCoord, YCoord)
+  print(f"Añadido en {XCoord},{YCoord}")
+  map1.obsCount()
+  # map1.print()
+  linecount += 1
   return map1
 
 def ChangueToNext(square, Frames, maps, r, c):
