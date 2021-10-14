@@ -5,7 +5,7 @@
 # Pablo Pérez González (alu0101318318@ull.edu.es)
 # Clase Map
 
-
+import random
 from PIL import Image
 from cell import Cell
 
@@ -33,6 +33,21 @@ class Map:
   def pos(self, i, j):
     return i * self.v_size + j
 
+  # Genera el mapa con obstáculos aleatorios según el porcentaje de obstáculos deseados
+  def generateRandomap(self, percentage):
+    size = self.h_size * self.v_size
+    obs_number = int(percentage * size / 100)
+    for i in range(obs_number):
+      rand_pos_x = random.randint(0, self.h_size - 1)
+      rand_pos_y = random.randint(0, self.v_size - 1)
+      while (rand_pos_x == self.x_origin) or (rand_pos_x == self.x_end):
+        rand_pos_x = random.randint(0, self.h_size - 1)
+      while (rand_pos_y == self.y_origin) or (rand_pos_y == self.y_end):
+        rand_pos_y = random.randint(0, self.v_size - 1)
+      # print(f"x = {rand_pos_x} - y = {rand_pos_y}\n")
+      self.matrix[self.pos(rand_pos_x, rand_pos_y)] = True
+
+
   # Genera un PNG con el mapa y sus obstáculos
   def print(self):
     img = Image.new("RGB", (self.h_size, self.v_size))
@@ -40,11 +55,11 @@ class Map:
     # Recorre todo el mapa y si no hay obstáculo lo pinta de negro
     for i in range(self.h_size):
         for j in range(self.v_size):
-            if self.matrix[self.pos(i,j)].isObstacle() == False:
+            if self.matrix[self.pos(i,j)] == False:
                 pixels[i,j] = (255,255,255)
-            if (self.matrix[self.pos(i,j)].isOrigin() == True):
+            if self.matrix[self.pos(i,j)].isOrigin() == True:
               pixels[i,j] = (194, 231, 193)
-            if (self.matrix[self.pos(i,j)].isFinish() == True):
+            if self.matrix[self.pos(i,j)].isFinish() == True:
               pixels[i,j] = (228, 151, 149 )
     # Amplía la imagen
     img = img.resize((50 * self.h_size, 50 * self.v_size), Image.NEAREST)
@@ -52,17 +67,17 @@ class Map:
   
   # Setea obstaculos
   def SetObstacle(self, i, j):
-    self.matrix[test.pos(i,j)].is_obstacle = True
+    if ((i != self.x_origin) or (i != self.x_end)) and ((j != self.y_origin) or (j != self.y_end)):
+      self.matrix[self.pos(i,j)].is_obstacle = True
+    else:
+      print("No se puede establecer como obstáculo la salida o el destino.\n")
 
 # Testeo de la clase
-test = Map(10,15)
+test = Map(10,15, 0, 0, 9, 10)
 
-test.matrix[test.pos(0,0)].is_obstacle = True
-test.matrix[test.pos(0,4)].is_obstacle = True
-test.matrix[test.pos(2,2)].is_obstacle = True
-test.matrix[test.pos(0,0)].is_obstacle = True
-test.matrix[test.pos(5,7)].is_obstacle = True
-test.matrix[test.pos(9,14)].is_obstacle = True
+test.generateRandomap(25)
+
+# print(test.matrix[test.pos(1,3)].isOrigin == True)
 
 # test.print()
 

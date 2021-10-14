@@ -21,13 +21,22 @@ class Cell:
       Cell.id += 1      # Aumenta el ID conforme se crean más celdas
 
   def isObstacle(self):
-    return self.is_obstacle
+    if self.is_obstacle == True:
+      return True
+    else:
+      return False
   
   def isOrigin(self):
-    return self.is_origin
+    if self.is_origin == True:
+      return True
+    else:
+      return False
   
   def isFinish(self):
-    return self.is_finish
+    if self.is_finish == True:
+      return True
+    else:
+      return False
 
   def setObstacle(self):
     self.is_obstacle = True
