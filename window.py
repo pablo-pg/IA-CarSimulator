@@ -8,7 +8,7 @@
 from tkinter import *
 #from buttons import PassToWindow2
 from map import *
-from PIL import Image
+from PIL import Image, ImageTk
 
 def FirstWindow(root, Window1):
   VariableRandom = BooleanVar() # True - Random, False - Manual
@@ -135,16 +135,14 @@ def FirstWindow(root, Window1):
 # Se podrá editar los obstáculos y puntos de partida y llegada.
 def SecondWindow(root, window2, maps):
   # Para ver el mapa generado antes de implementar la interfaz
-  #maps[0].print()
-  #root2 = Toplevel()
+  #ScrollBar1 = Scrollbar(window2, orient=HORIZONTAL)
+  #ScrollBar1.pack(side=TOP, fill=X)
+  #ScrollBar2 = Scrollbar(window2, orient=VERTICAL)
+  #ScrollBar2.pack(side=RIGHT, fill=Y)
+
   Frame1 = Frame(window2)
-  Frame1.pack(expand="True", side=TOP)
-  Frame1.config(bg='#F2F3F9', height="200", width="500")
-  
-  ScrollBar1 = Scrollbar(window2, orient=HORIZONTAL)
-  ScrollBar1.pack(side=BOTTOM, fill=X)
-  ScrollBar2 = Scrollbar(window2, orient=VERTICAL)
-  ScrollBar2.pack(side=RIGHT, fill=Y)
+  Frame1.pack(expand="False", fill=BOTH, side=TOP)
+  Frame1.config(height="500", width="500")
 
   Frame2 = Frame(window2)
   Frame2.pack(side=BOTTOM)
@@ -157,11 +155,14 @@ def SecondWindow(root, window2, maps):
 
   if (maps[0].v_size > 35) | (maps[0].h_size > 35):
     maps[0].print()
-    image1 = Image.open("F:\AA A Ingeniería Informática\IA\Practica_1_CarSimulator\IA-CarSimulator\map1.jpg")
-    render = PhotoImage(image1)
-    render = render.resize((50 * maps[0].h_size, 50 * maps[0].v_size), Image.NEAREST)
-    img = Label(Frame1, image=render)
-    img.pack()   
+    #image1 = Image.open("map1.jpg")
+    #image1.show()
+    #image1= image1.resize((10*maps[0].v_size,10*maps[0].h_size))
+    #render = ImageTk.PhotoImage(image1)
+    #img = Label(Frame1, image=render)
+    #img.render = render
+    #img.pack(expand="False", fill=BOTH, side=TOP)
+    #img.config(height="500", width="500")   
   else:
     for r in range(0, maps[0].v_size):
       for c in range (0, maps[0].h_size):
@@ -188,7 +189,7 @@ def PassToWindow2(root,window1,VariableRandom, VariableLoad, RuteText, WidthText
   FinishXText_info = FinishXText.get()
   FinishYText_info = FinishYText.get()
 
-  print("Prueba: " + str(VariableRandom_info) + " " + str(VariableLoad_info) + " " + str(RuteText_info) + " " + str(WidthText_info) + " " + str(HeightText_info) + " " + str(PercentageText_info) + " " + str(CoordsText_info))
+  #print("Prueba: " + str(VariableRandom_info) + " " + str(VariableLoad_info) + " " + str(RuteText_info) + " " + str(WidthText_info) + " " + str(HeightText_info) + " " + str(PercentageText_info) + " " + str(CoordsText_info))
   
   # Crear aqui el mapa con las condiciones que se han pasado.
   maps = []
@@ -204,6 +205,7 @@ def PassToWindow2(root,window1,VariableRandom, VariableLoad, RuteText, WidthText
       map1.generateRandommap(20)
     else: # Se entran manual
       # Si me sale bien lo de clickar, quitamos esta opcion
+      map1 = Map(WidthText_info, HeightText_info, OriginXText_info, OriginYText_info, FinishXText_info, FinishYText_info)
       print("Manual")
   maps.append(map1)
 
@@ -325,7 +327,7 @@ def ReadMap(RuteText):
   return map1
 
 def ChangueToNext(square, Frames, maps, r, c):
-  print("r, c", r, c)
+  #print("r, c", r, c)
   # Verde -> Rojo (si no hay ya uno) -> Blanco -> Negro
   if maps[0].matrix[maps[0].pos(c,r)].isOrigin() == True:
     maps[0].matrix[maps[0].pos(c,r)].setWhite()
