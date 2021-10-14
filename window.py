@@ -8,6 +8,7 @@
 from tkinter import *
 #from buttons import PassToWindow2
 from map import *
+from PIL import Image
 
 def FirstWindow(root, Window1):
   VariableRandom = BooleanVar() # True - Random, False - Manual
@@ -138,7 +139,12 @@ def SecondWindow(root, window2, maps):
   #root2 = Toplevel()
   Frame1 = Frame(window2)
   Frame1.pack(expand="True", side=TOP)
-  Frame1.config(bg='#F2F3F9')
+  Frame1.config(bg='#F2F3F9', height="200", width="500")
+  
+  ScrollBar1 = Scrollbar(window2, orient=HORIZONTAL)
+  ScrollBar1.pack(side=BOTTOM, fill=X)
+  ScrollBar2 = Scrollbar(window2, orient=VERTICAL)
+  ScrollBar2.pack(side=RIGHT, fill=Y)
 
   Frame2 = Frame(window2)
   Frame2.pack(side=BOTTOM)
@@ -149,15 +155,19 @@ def SecondWindow(root, window2, maps):
   ExitButton = Button(Frame2, text="Salir del programa", bg="#E49795", command=ExitProgram)
   ExitButton.pack(side=LEFT, expand="True",fill=BOTH, padx=5)
 
-  if (maps[0].v_size > 35 | maps[0].h_size > 35):
+  if (maps[0].v_size > 35) | (maps[0].h_size > 35):
     maps[0].print()
+    image1 = Image.open("F:\AA A Ingeniería Informática\IA\Practica_1_CarSimulator\IA-CarSimulator\map1.jpg")
+    render = PhotoImage(image1)
+    render = render.resize((50 * maps[0].h_size, 50 * maps[0].v_size), Image.NEAREST)
+    img = Label(Frame1, image=render)
+    img.pack()   
   else:
     for r in range(0, maps[0].v_size):
       for c in range (0, maps[0].h_size):
         Draw_Map(Frame1,maps, r, c)
   
   
-
 # Aquí se reciben los datos de la ventana 1. 
 # Con esto, se genera el mapa con la info introducida
 def PassToWindow2(root,window1,VariableRandom, VariableLoad, RuteText, WidthText, HeightText, PercentageText, CoordsText, OriginXText, OriginYText, FinishXText, FinishYText):
@@ -185,12 +195,8 @@ def PassToWindow2(root,window1,VariableRandom, VariableLoad, RuteText, WidthText
   if (VariableLoad_info==True):
     # Se lee el mapa y lo retorna a una variable
     print("Lee el mapa")
-    map1 = ReadMap(RuteText_info) # No implementado
-    maps.append(map1)
-  
+    map1 = ReadMap(RuteText_info)
   else: # Se genera con los datos pasados
-    maps.append(Map(WidthText_info, HeightText_info, OriginXText_info, OriginYText_info, FinishXText_info, FinishYText_info))
-    #map1 = Map(WidthText_info, HeightText_info, OriginXText_info, OriginYText_info, FinishXText_info, FinishYText_info)
     # Condiciones de los obtaculos
     if (VariableRandom_info):
       print("Random")
@@ -198,7 +204,8 @@ def PassToWindow2(root,window1,VariableRandom, VariableLoad, RuteText, WidthText
       map1.generateRandommap(20)
     else: # Se entran manual
       # Si me sale bien lo de clickar, quitamos esta opcion
-      print("hola")
+      print("Manual")
+  maps.append(map1)
 
   # Evolucion de ventanas
   window1.destroy() # Cierra la ventana anterior

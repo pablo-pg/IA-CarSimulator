@@ -45,7 +45,7 @@ class Map:
       while (rand_pos_y == self.y_origin) or (rand_pos_y == self.y_end):
         rand_pos_y = random.randint(0, self.v_size - 1)
       # print(f"x = {rand_pos_x} - y = {rand_pos_y}\n")
-      self.matrix[self.pos(rand_pos_x, rand_pos_y)] = True
+      self.matrix[self.pos(rand_pos_x, rand_pos_y)].is_obstacle = True
 
 
   # Genera un PNG con el mapa y sus obstáculos
@@ -55,7 +55,7 @@ class Map:
     # Recorre todo el mapa y si no hay obstáculo lo pinta de blanco
     for i in range(self.h_size):
         for j in range(self.v_size):
-            if self.matrix[self.pos(i,j)] == False:
+            if self.matrix[self.pos(i,j)].isObstacle() == False:
                 pixels[i,j] = (255,255,255)
             if self.matrix[self.pos(i,j)].isOrigin() == True:
               pixels[i,j] = (194, 231, 193)
@@ -63,11 +63,13 @@ class Map:
               pixels[i,j] = (228, 151, 149 )
     # Amplía la imagen
     img = img.resize((50 * self.h_size, 50 * self.v_size), Image.NEAREST)
+    img.save('map1.jpg')
     img.show()
   
   # Setea obstaculos
   def SetObstacle(self, i, j):
-    if ((int(i) != self.x_origin) or (int(i) != self.x_end)) and ((int(j) != self.y_origin) or (int(j) != self.y_end)):
+    if (i != self.x_origin and j != self.y_origin) and (i != self.x_end and j != self.y_end):
+    #if ((int(i) != self.x_origin) or (int(i) != self.x_end)) and ((int(j) != self.y_origin) or (int(j) != self.y_end)):
       self.matrix[self.pos(int(i),int(j))].is_obstacle = True
     else:
       print("No se puede establecer como obstáculo la salida o el destino.\n")
@@ -89,5 +91,5 @@ test.generateRandommap(25)
 
 # print(test.matrix[test.pos(1,3)].isOrigin == True)
 
-# test.print()
+#test.print()
 
