@@ -194,6 +194,8 @@ def PassToWindow2(root,window1,VariableRandom, VariableLoad, RuteText, WidthText
     # Condiciones de los obtaculos
     if (VariableRandom_info):
       print("Random")
+      map1 = Map(WidthText_info, HeightText_info, OriginXText_info, OriginYText_info, FinishXText_info, FinishYText_info)
+      map1.generateRandommap(20)
     else: # Se entran manual
       # Si me sale bien lo de clickar, quitamos esta opcion
       print("hola")
@@ -231,8 +233,8 @@ def ReadMap(RuteText):
             Width += letter
         else:
           lettercount += 1
-        print("Lettercount: ", lettercount)
-        print("Alto: ", Height, "Ancho: ", Width)
+        # print("Lettercount: ", lettercount)
+        # print("Alto: ", Height, "Ancho: ", Width)
     elif (linecount == 1): # Lee las coordenadas de inicio
       lettercount = 0
       for letter in line:
@@ -243,8 +245,8 @@ def ReadMap(RuteText):
             YOrigin += letter
         else:
           lettercount += 1
-        print("Lettercount: ", lettercount)
-        print("X Origen: ", XOrigin, "Y Origen: ", YOrigin)
+        # print("Lettercount: ", lettercount)
+        # print("X Origen: ", XOrigin, "Y Origen: ", YOrigin)
     elif (linecount == 2): # Lee las coordenadas de destino
       lettercount = 0
       for letter in line:
@@ -255,8 +257,8 @@ def ReadMap(RuteText):
             YFinish += letter
         else:
           lettercount += 1
-        print("Lettercount: ", lettercount)
-        print("X Finish: ", XFinish, "Y Finish: ", YFinish)
+        # print("Lettercount: ", lettercount)
+        # print("X Finish: ", XFinish, "Y Finish: ", YFinish)
     else: # Lee los obstáculos
       linecount2 = linecount
       lettercount = 0
@@ -269,23 +271,30 @@ def ReadMap(RuteText):
       # Creo el mapa para poder asignar los obstáculos
       map1 = Map(Width, Height, XOrigin, YOrigin, XFinish, YFinish)
       # obstaculos
+      obstacles = []
       XCoord=""
       YCoord=""
       for letter in line:
-        if (letter != ' '):
+        if (letter != ' ') and (letter != "\n"):
           if (lettercount == 0):
             XCoord += letter
           else:
             YCoord += letter     
         else:
           lettercount += 1
+      
+      obstacles.append([XCoord, YCoord])
 
-      print("Lettercount: ", lettercount)
-      print("Linecount: ", linecount)
+      # print("Lettercount: ", lettercount)
+      # print("Linecount: ", linecount)
       print("X obstaculo: ", XCoord, "Y obstaculo: ", YCoord)
-      XCoord=int(XCoord)
-      YCoord=int(YCoord)
+      # XCoord=int(XCoord)
+      # YCoord=int(YCoord)
+      print(obstacles)
       map1.SetObstacle(XCoord, YCoord)
+      print(f"Añadido en {XCoord},{YCoord}")
+      map1.obsCount()
+      # map1.print()
     linecount += 1
   return map1
 

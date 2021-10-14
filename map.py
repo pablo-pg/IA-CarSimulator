@@ -31,10 +31,10 @@ class Map:
 
   # Devuele la posición real de la lista pasando por parámetro posiciones x,y
   def pos(self, i, j):
-    return i * self.v_size + j
+    return int(i * self.v_size + j)
 
   # Genera el mapa con obstáculos aleatorios según el porcentaje de obstáculos deseados
-  def generateRandomap(self, percentage):
+  def generateRandommap(self, percentage):
     size = self.h_size * self.v_size
     obs_number = int(percentage * size / 100)
     for i in range(obs_number):
@@ -52,7 +52,7 @@ class Map:
   def print(self):
     img = Image.new("RGB", (self.h_size, self.v_size))
     pixels = img.load()
-    # Recorre todo el mapa y si no hay obstáculo lo pinta de negro
+    # Recorre todo el mapa y si no hay obstáculo lo pinta de blanco
     for i in range(self.h_size):
         for j in range(self.v_size):
             if self.matrix[self.pos(i,j)] == False:
@@ -67,15 +67,25 @@ class Map:
   
   # Setea obstaculos
   def SetObstacle(self, i, j):
-    if ((i != self.x_origin) or (i != self.x_end)) and ((j != self.y_origin) or (j != self.y_end)):
-      self.matrix[self.pos(i,j)].is_obstacle = True
+    if ((int(i) != self.x_origin) or (int(i) != self.x_end)) and ((int(j) != self.y_origin) or (int(j) != self.y_end)):
+      self.matrix[self.pos(int(i),int(j))].is_obstacle = True
     else:
       print("No se puede establecer como obstáculo la salida o el destino.\n")
+
+  def obsCount(self):
+    count = 0
+    for i in self.matrix:
+      if i.isObstacle() == True:
+        count += 1
+    print(f"Hay {count} obstáculos")
+
+
+
 
 # Testeo de la clase
 test = Map(10,15, 0, 0, 9, 10)
 
-test.generateRandomap(25)
+test.generateRandommap(25)
 
 # print(test.matrix[test.pos(1,3)].isOrigin == True)
 
