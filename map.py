@@ -14,8 +14,14 @@ from cell import Cell
 class Map:
 
   def __init__(self, h_size = 10, v_size = 10, x_origin = 0, y_origin = 0, x_end = 1, y_end = 1):
-    self.h_size = h_size          # Tamaño horizontal del mapa
-    self.v_size = v_size          # Tamaño vertical del mapa
+    if (h_size <= 0):
+      self.h_size = 10
+    else:
+      self.h_size = h_size          # Tamaño horizontal del mapa
+    if (v_size <=0):
+      self.v_size = 10
+    else:
+      self.v_size = v_size          # Tamaño vertical del mapa
     self.matrix = []              # Lista que será usada para representar la matriz
     self.x_origin = x_origin      # Punto de partida del coche
     self.y_origin = y_origin
