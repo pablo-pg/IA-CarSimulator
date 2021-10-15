@@ -145,6 +145,10 @@ def SecondWindow(root, window2, maps):
   Canvas1 = Canvas(Frame0)
   ScrollBarVertical =Scrollbar(Frame0, orient="vertical", command=Canvas1.yview)
   ScrollBarVertical.pack(side="right", fill="y")
+
+  ScrollBarHorizontal = Scrollbar(Frame0, orient="horizontal", command=Canvas1.xview)
+  ScrollBarHorizontal.pack(side="bottom", fill="x")
+
   Frame1 = Frame(Canvas1)
 
   Frame1.bind(
@@ -155,6 +159,7 @@ def SecondWindow(root, window2, maps):
   )
   Canvas1.create_window((0,0), window=Frame1, anchor="nw")
   Canvas1.configure(yscrollcommand=ScrollBarVertical.set)
+  Canvas1.configure(xscrollcommand=ScrollBarHorizontal.set)
   Canvas1.pack(side="left", fill="both", expand=True)
  
   Frame2 = Frame(window2)
