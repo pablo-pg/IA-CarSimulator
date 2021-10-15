@@ -173,14 +173,14 @@ def SecondWindow(root, window2, maps):
 
   if (maps[0].v_size > 35) | (maps[0].h_size > 35):
     maps[0].print()
-    #image1 = Image.open("map1.jpg")
-    #image1.show()
-    #image1= image1.resize((10*maps[0].v_size,10*maps[0].h_size))
-    #render = ImageTk.PhotoImage(image1)
-    #img = Label(Frame1, image=render)
-    #img.render = render
-    #img.pack(expand="False", fill=BOTH, side=TOP)
-    #img.config(height="500", width="500")   
+    image1 = Image.open("map1.jpg")
+    image1.show()
+    image1= image1.resize((10*maps[0].v_size,10*maps[0].h_size))
+    render = ImageTk.PhotoImage(image1)
+    img = Label(Frame1, image=render)
+    img.render = render
+    img.pack(expand="False", fill=BOTH, side=TOP)
+    img.config(height="500", width="500")   
   else:
     for r in range(0, maps[0].v_size):
       for c in range (0, maps[0].h_size):
