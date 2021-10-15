@@ -343,7 +343,7 @@ def ReadObstacles(InputValue, map1):
     lettercount = 0
     XCoord=""
     YCoord=""
-    obstacles = []
+    #obstacles = []
     for letter in line:
       if (letter != ' ') and (letter != "\n"):
         if (lettercount == 0):
@@ -352,16 +352,22 @@ def ReadObstacles(InputValue, map1):
           YCoord += letter     
       else:
         lettercount += 1
-    obstacles.append([XCoord, YCoord])
+    XCoord = int(XCoord)
+    YCoord = int(YCoord)
+    #obstacles.append([XCoord, YCoord])
     print("Lettercount: ", lettercount)
     print("Linecount: ", linecount)
     print("X obstaculo: ", XCoord, "Y obstaculo: ", YCoord)
-    # XCoord=int(XCoord)
-    # YCoord=int(YCoord)
-    print(obstacles)
-    map1.SetObstacle(XCoord, YCoord)
-    print(f"Añadido en {XCoord},{YCoord}")
-    map1.obsCount()
+    #print(obstacles)
+    print("Prueba: ",XCoord >= map1.h_size, YCoord >= map1.v_size,XCoord < 0,YCoord < 0)
+    if (XCoord >= map1.h_size) | (YCoord >= map1.v_size):
+      print(f"Obstaculo fuera de rango: {XCoord},{YCoord}")
+    elif (XCoord < 0) | (YCoord < 0):
+      print(f"Obstaculo fuera de rango: {XCoord},{YCoord}")
+    else:
+      map1.SetObstacle(XCoord, YCoord)
+      print(f"Añadido en {XCoord},{YCoord}")
+      #map1.obsCount()
     # map1.print()
     linecount += 1
   return map1
