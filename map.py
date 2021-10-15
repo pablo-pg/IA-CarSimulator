@@ -23,10 +23,29 @@ class Map:
     else:
       self.v_size = v_size          # Tamaño vertical del mapa
     self.matrix = []              # Lista que será usada para representar la matriz
-    self.x_origin = x_origin      # Punto de partida del coche
-    self.y_origin = y_origin
-    self.x_end = x_end                # Punto de destino del coche
-    self.y_end = y_end
+    #print("Prueba x_origin: ", (x_origin >= h_size), (x_origin < 0))
+    #print("Prueba y_origin: ", (y_origin >= v_size), (y_origin < 0))
+    if (x_origin >= h_size) | (x_origin < 0):           
+      self.x_origin = 0
+    else:
+      self.x_origin = x_origin      # Punto de partida del coche
+    
+    if (y_origin >= v_size) | (y_origin < 0):           
+      self.yorigin = 0
+    else:
+      self.y_origin = y_origin
+    
+    if (x_end == x_origin | x_end < 0 | x_end >= h_size):
+      self.x_end = 1
+    else:
+      self.x_end = x_end                # Punto de destino del coche
+    
+
+    if (y_end == y_origin | y_end < 0 | y_end >= v_size):
+      self.y_end = 1
+    else:
+      self.y_end = y_end
+    
     for i in range(v_size):
       for j in range(h_size):
         cell = Cell(j,i)

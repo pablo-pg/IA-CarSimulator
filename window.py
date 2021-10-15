@@ -139,17 +139,29 @@ def SecondWindow(root, window2, maps):
   
 
   # Para ver el mapa generado antes de implementar la interfaz
-  Frame1 = Frame(window2)
-  Frame1.pack(expand="False", fill=BOTH, side=TOP)
-  Frame1.config(height="500", width="500")
+  Frame0 = Frame(window2)
+  Frame0.pack(expand="True", fill=BOTH, side=TOP)
 
-  #ScrollBar1 = Scrollbar(window2, command=window2.yview)
-  #ScrollBar1.pack(side=TOP, fill=X)
-  #window2.config(xscrollcommand=ScrollBar1.set)
-  #ScrollBar2 = Scrollbar(window2, command=window2.xview)
-  #ScrollBar2.pack(side=RIGHT, fill=Y)
-  #window2.config(yscrollcommand=ScrollBar2.set)
+  Canvas1 = Canvas(Frame0)
+  ScrollBarVertical =Scrollbar(Frame0, orient="vertical", command=Canvas1.yview)
+  ScrollBarVertical.pack(side="right", fill="y")
 
+  ScrollBarHorizontal = Scrollbar(Frame0, orient="horizontal", command=Canvas1.xview)
+  ScrollBarHorizontal.pack(side="bottom", fill="x")
+
+  Frame1 = Frame(Canvas1)
+
+  Frame1.bind(
+    "<Configure>",
+    lambda e: Canvas1.configure(
+      scrollregion = Canvas1.bbox("all")
+    )
+  )
+  Canvas1.create_window((0,0), window=Frame1, anchor="nw")
+  Canvas1.configure(yscrollcommand=ScrollBarVertical.set)
+  Canvas1.configure(xscrollcommand=ScrollBarHorizontal.set)
+  Canvas1.pack(side="left", fill="both", expand=True)
+ 
   Frame2 = Frame(window2)
   Frame2.pack(side=BOTTOM)
 
@@ -214,9 +226,9 @@ def PassToWindow2(root,window1,VariableRandom, VariableLoad, RuteText, WidthText
       map1.generateRandommap(20)
     else: # Se entran manual
       # Si me sale bien lo de clickar, quitamos esta opcion
+      print("Manual")
       map1 = Map(WidthText_info, HeightText_info, OriginXText_info, OriginYText_info, FinishXText_info, FinishYText_info)
       map1 = ReadObstacles(InputValue, map1)
-      print("Manual")
   maps.append(map1)
 
   # Evolucion de ventanas
@@ -338,33 +350,38 @@ def ReadMap(RuteText):
 
 def ReadObstacles(InputValue, map1):
   linecount = 0
-  lettercount = 0
   
-  lettercount = 0
-  XCoord=""
-  YCoord=""
-  obstacles = []
-  InputValue = str(InputValue)
-  for letter in InputValue.len:
-    if (letter != ' ') and (letter != "\n"):
-      if (lettercount == 0):
-        XCoord += letter
+  for line in InputValue.splitlines():
+    lettercount = 0
+    XCoord=""
+    YCoord=""
+    #obstacles = []
+    for letter in line:
+      if (letter != ' ') and (letter != "\n"):
+        if (lettercount == 0):
+          XCoord += letter
+        else:
+          YCoord += letter     
       else:
-        YCoord += letter     
+        lettercount += 1
+    XCoord = int(XCoord)
+    YCoord = int(YCoord)
+    #obstacles.append([XCoord, YCoord])
+    print("Lettercount: ", lettercount)
+    print("Linecount: ", linecount)
+    print("X obstaculo: ", XCoord, "Y obstaculo: ", YCoord)
+    #print(obstacles)
+    #print("Prueba: ",XCoord >= map1.h_size, YCoord >= map1.v_size,XCoord < 0,YCoord < 0)
+    if (XCoord >= map1.h_size) | (YCoord >= map1.v_size):
+      print(f"Obstaculo fuera de rango: {XCoord},{YCoord}")
+    elif (XCoord < 0) | (YCoord < 0):
+      print(f"Obstaculo fuera de rango: {XCoord},{YCoord}")
     else:
-      lettercount += 1
-  obstacles.append([XCoord, YCoord])
-  print("Lettercount: ", lettercount)
-  print("Linecount: ", linecount)
-  print("X obstaculo: ", XCoord, "Y obstaculo: ", YCoord)
-  # XCoord=int(XCoord)
-  # YCoord=int(YCoord)
-  print(obstacles)
-  map1.SetObstacle(XCoord, YCoord)
-  print(f"Añadido en {XCoord},{YCoord}")
-  map1.obsCount()
-  # map1.print()
-  linecount += 1
+      map1.SetObstacle(XCoord, YCoord)
+      print(f"Añadido en {XCoord},{YCoord}")
+      #map1.obsCount()
+    # map1.print()
+    linecount += 1
   return map1
 
 def ChangueToNext(square, Frames, maps, r, c):
