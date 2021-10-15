@@ -139,17 +139,24 @@ def SecondWindow(root, window2, maps):
   
 
   # Para ver el mapa generado antes de implementar la interfaz
-  Frame1 = Frame(window2)
-  Frame1.pack(expand="False", fill=BOTH, side=TOP)
-  Frame1.config(height="500", width="500")
+  Frame0 = Frame(window2)
+  Frame0.pack(expand="True", fill=BOTH, side=TOP)
 
-  #ScrollBar1 = Scrollbar(window2, command=window2.yview)
-  #ScrollBar1.pack(side=TOP, fill=X)
-  #window2.config(xscrollcommand=ScrollBar1.set)
-  #ScrollBar2 = Scrollbar(window2, command=window2.xview)
-  #ScrollBar2.pack(side=RIGHT, fill=Y)
-  #window2.config(yscrollcommand=ScrollBar2.set)
+  Canvas1 = Canvas(Frame0)
+  ScrollBarVertical =Scrollbar(Frame0, orient="vertical", command=Canvas1.yview)
+  ScrollBarVertical.pack(side="right", fill="y")
+  Frame1 = Frame(Canvas1)
 
+  Frame1.bind(
+    "<Configure>",
+    lambda e: Canvas1.configure(
+      scrollregion = Canvas1.bbox("all")
+    )
+  )
+  Canvas1.create_window((0,0), window=Frame1, anchor="nw")
+  Canvas1.configure(yscrollcommand=ScrollBarVertical.set)
+  Canvas1.pack(side="left", fill="both", expand=True)
+ 
   Frame2 = Frame(window2)
   Frame2.pack(side=BOTTOM)
 
