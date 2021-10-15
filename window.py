@@ -338,33 +338,32 @@ def ReadMap(RuteText):
 
 def ReadObstacles(InputValue, map1):
   linecount = 0
-  lettercount = 0
   
-  lettercount = 0
-  XCoord=""
-  YCoord=""
-  obstacles = []
-  InputValue = str(InputValue)
-  for letter in InputValue.len:
-    if (letter != ' ') and (letter != "\n"):
-      if (lettercount == 0):
-        XCoord += letter
+  for line in InputValue.splitlines():
+    lettercount = 0
+    XCoord=""
+    YCoord=""
+    obstacles = []
+    for letter in line:
+      if (letter != ' ') and (letter != "\n"):
+        if (lettercount == 0):
+          XCoord += letter
+        else:
+          YCoord += letter     
       else:
-        YCoord += letter     
-    else:
-      lettercount += 1
-  obstacles.append([XCoord, YCoord])
-  print("Lettercount: ", lettercount)
-  print("Linecount: ", linecount)
-  print("X obstaculo: ", XCoord, "Y obstaculo: ", YCoord)
-  # XCoord=int(XCoord)
-  # YCoord=int(YCoord)
-  print(obstacles)
-  map1.SetObstacle(XCoord, YCoord)
-  print(f"Añadido en {XCoord},{YCoord}")
-  map1.obsCount()
-  # map1.print()
-  linecount += 1
+        lettercount += 1
+    obstacles.append([XCoord, YCoord])
+    print("Lettercount: ", lettercount)
+    print("Linecount: ", linecount)
+    print("X obstaculo: ", XCoord, "Y obstaculo: ", YCoord)
+    # XCoord=int(XCoord)
+    # YCoord=int(YCoord)
+    print(obstacles)
+    map1.SetObstacle(XCoord, YCoord)
+    print(f"Añadido en {XCoord},{YCoord}")
+    map1.obsCount()
+    # map1.print()
+    linecount += 1
   return map1
 
 def ChangueToNext(square, Frames, maps, r, c):
