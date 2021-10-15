@@ -214,9 +214,9 @@ def PassToWindow2(root,window1,VariableRandom, VariableLoad, RuteText, WidthText
       map1.generateRandommap(20)
     else: # Se entran manual
       # Si me sale bien lo de clickar, quitamos esta opcion
+      print("Manual")
       map1 = Map(WidthText_info, HeightText_info, OriginXText_info, OriginYText_info, FinishXText_info, FinishYText_info)
       map1 = ReadObstacles(InputValue, map1)
-      print("Manual")
   maps.append(map1)
 
   # Evolucion de ventanas
@@ -359,7 +359,7 @@ def ReadObstacles(InputValue, map1):
     print("Linecount: ", linecount)
     print("X obstaculo: ", XCoord, "Y obstaculo: ", YCoord)
     #print(obstacles)
-    print("Prueba: ",XCoord >= map1.h_size, YCoord >= map1.v_size,XCoord < 0,YCoord < 0)
+    #print("Prueba: ",XCoord >= map1.h_size, YCoord >= map1.v_size,XCoord < 0,YCoord < 0)
     if (XCoord >= map1.h_size) | (YCoord >= map1.v_size):
       print(f"Obstaculo fuera de rango: {XCoord},{YCoord}")
     elif (XCoord < 0) | (YCoord < 0):
