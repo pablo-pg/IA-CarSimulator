@@ -89,7 +89,6 @@ class Map:
     # Amplía la imagen
     img = img.resize((50 * self.h_size, 50 * self.v_size), Image.NEAREST)
     img.save('map1.jpg')
-    img.show()
   
   # Setea obstaculos
   def SetObstacle(self, i, j):
