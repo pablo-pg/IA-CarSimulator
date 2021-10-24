@@ -23,8 +23,6 @@ class Map:
     else:
       self.v_size = v_size          # Tamaño vertical del mapa
     self.matrix = []              # Lista que será usada para representar la matriz
-    #print("Prueba x_origin: ", (x_origin >= h_size), (x_origin < 0))
-    #print("Prueba y_origin: ", (y_origin >= v_size), (y_origin < 0))
     if (x_origin >= h_size) | (x_origin < 0):           
       self.x_origin = 0
     else:
@@ -54,9 +52,11 @@ class Map:
     self.matrix[self.pos(self.x_origin, self.y_origin)].is_origin = True
     self.matrix[self.pos(self.x_end, self.y_end)].is_finish = True
 
+
   # Devuele la posición real de la lista pasando por parámetro posiciones x,y
   def pos(self, i, j):
     return int(i * self.v_size + j)
+
 
   # Genera el mapa con obstáculos aleatorios según el porcentaje de obstáculos deseados
   def generateRandommap(self, percentage):
@@ -69,8 +69,33 @@ class Map:
         rand_pos_x = random.randint(0, self.h_size - 1)
       while (rand_pos_y == self.y_origin) or (rand_pos_y == self.y_end):
         rand_pos_y = random.randint(0, self.v_size - 1)
-      # print(f"x = {rand_pos_x} - y = {rand_pos_y}\n")
       self.matrix[self.pos(rand_pos_x, rand_pos_y)].is_obstacle = True
+
+
+  # Setea obstaculos
+  def SetObstacle(self, i, j):
+    if (i != self.x_origin and j != self.y_origin) and (i != self.x_end and j != self.y_end):
+      self.matrix[self.pos(int(i),int(j))].is_obstacle = True
+    else:
+      print("No se puede establecer como obstáculo la salida o el destino.\n")
+
+
+  def obsCount(self):
+    count = 0
+    for i in self.matrix:
+      if i.isObstacle() == True:
+        count += 1
+    print(f"Hay {count} obstáculos")
+
+
+  def setDistances(self):
+    # for i in self.h_size:
+    #   for j in self.v_size:
+    #     self.matrix[self.pos(i, j)].euclideanDistance(self.x_end, self.y_end)
+    #     self.matrix[self.pos(i, j)].manhattanDistance(self.x_end, self.y_end)
+    for cell in self.matrix:
+      cell.euclideanDistance(self.x_end, self.y_end)
+      cell.manhattanDistance(self.x_end, self.y_end)
 
 
   # Genera un PNG con el mapa y sus obstáculos
@@ -90,30 +115,9 @@ class Map:
     img = img.resize((50 * self.h_size, 50 * self.v_size), Image.NEAREST)
     img.save('map1.jpg')
   
-  # Setea obstaculos
-  def SetObstacle(self, i, j):
-    if (i != self.x_origin and j != self.y_origin) and (i != self.x_end and j != self.y_end):
-    #if ((int(i) != self.x_origin) or (int(i) != self.x_end)) and ((int(j) != self.y_origin) or (int(j) != self.y_end)):
-      self.matrix[self.pos(int(i),int(j))].is_obstacle = True
-    else:
-      print("No se puede establecer como obstáculo la salida o el destino.\n")
 
-  def obsCount(self):
-    count = 0
-    for i in self.matrix:
-      if i.isObstacle() == True:
-        count += 1
-    print(f"Hay {count} obstáculos")
-
-
-
-
-# Testeo de la clase
-test = Map(10,15, 0, 0, 9, 10)
-
-test.generateRandommap(25)
-
-# print(test.matrix[test.pos(1,3)].isOrigin == True)
-
-#test.print()
-
+# mapq = Map(10, 10, 0, 0, 5, 5)
+# mapq.setDistances()
+# mapq.generateRandommap(20)
+# mapq.obsCount()
+# mapq.print()

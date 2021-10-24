@@ -6,6 +6,8 @@
 #
 # Clase Cell. Cada coordenada del mapa será una instancia de celdas
 
+import math
+
 class Cell:
 
   id = 0          # Cada celda tendrá su propio ID, se empieza a contar desde 0
@@ -17,6 +19,8 @@ class Cell:
       self.is_obstacle = is_obstacle  # True si contiene un obstáculo
       self.is_origin = is_origin
       self.is_finish = is_finish
+      self.manhattan_distance = math.inf
+      self.euclidean_distance = math.inf
       
       Cell.id += 1      # Aumenta el ID conforme se crean más celdas
 
@@ -52,3 +56,18 @@ class Cell:
     self.is_obstacle = False
     self.is_finish = False
 
+  def euclideanDistance(self, x_finish, y_finish):
+    if x_finish > self.x_pos:
+      x = ((x_finish - self.x_pos)^2)
+    else:
+      x = ((self.x_pos - x_finish)^2)
+    if y_finish > self.y_pos:
+      y = ((y_finish - self.y_pos)^2)
+    else:
+      y = ((self.y_pos - y_finish)^2)
+    self.euclidean_distance = math.sqrt(x + y)
+    return self.euclidean_distance
+
+  def manhattanDistance(self, x_finish, y_finish):
+    self.manhattan_distance = (abs(x_finish - self.x_pos) + abs(y_finish - self.y_pos))
+    return self.manhattan_distance

@@ -180,7 +180,6 @@ def SecondWindow(root, window2, maps):
     img = Label(Frame1, image=render)
     img.render = render
     img.pack(expand="False", fill=BOTH, side=TOP)
-    # img.config(height="500", width="500")   
   else:
     for r in range(0, maps[0].v_size):
       for c in range (0, maps[0].h_size):
@@ -223,12 +222,14 @@ def PassToWindow2(root,window1,VariableRandom, VariableLoad, RuteText, WidthText
     if (VariableRandom_info):
       print("Random")
       map1 = Map(WidthText_info, HeightText_info, OriginXText_info, OriginYText_info, FinishXText_info, FinishYText_info)
+      map1.setDistances()
       map1.generateRandommap(20)
     else: # Se entran manual
       # Si me sale bien lo de clickar, quitamos esta opcion
       print("Manual")
       map1 = Map(WidthText_info, HeightText_info, OriginXText_info, OriginYText_info, FinishXText_info, FinishYText_info)
       map1 = ReadObstacles(InputValue, map1)
+      map1.setDistances()
   maps.append(map1)
 
   # Evolucion de ventanas
@@ -300,6 +301,7 @@ def ReadMap(RuteText):
       YFinish = int(YFinish)
       # Creo el mapa para poder asignar los obstáculos
       map1 = Map(Width, Height, XOrigin, YOrigin, XFinish, YFinish)
+      map1.setDistances()
       # obstaculos
       obstacles = []
       XCoord=""
