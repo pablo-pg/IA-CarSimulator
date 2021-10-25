@@ -13,16 +13,19 @@ from PIL import Image, ImageTk
 def FirstWindow(root, Window1):
   VariableRandom = BooleanVar() # True - Random, False - Manual
   VariableLoad = BooleanVar() # True - Load, False - Create
+  VariableRandom.set(True)
+  VariableLoad.set(True)
 
   RuteText = StringVar()
   RuteText.set("mapa1.txt")
 
   WidthText = IntVar()
-  WidthText.set(5)
+  WidthText.set(10)
   HeightText = IntVar()
-  HeightText.set(5)
+  HeightText.set(10)
 
   PercentageText = IntVar()
+  PercentageText.set(5)
 
   OriginXText = IntVar()
   OriginXText.set(0)
@@ -38,12 +41,12 @@ def FirstWindow(root, Window1):
   Frame3 = Frame(Window1)
   Frame3.pack(side=TOP, expand="True",fill=BOTH)
   
-  # Boton en la parte inferior
-  NextButton = Button(Window1, text="Siguiente", bg="#C2E7C1", command=lambda: PassToWindow2(root, Window1, VariableRandom, VariableLoad, RuteText, WidthText, HeightText, PercentageText, CoordsTextBox, OriginXText, OriginYText, FinishXText, FinishYText))
-  NextButton.pack(side=BOTTOM, expand="True", padx=5)
-
+  # Botones en la parte inferior
   ExitButton = Button(Window1, text="Salir del programa", bg="#E49795", command=ExitProgram)
   ExitButton.pack(side=BOTTOM, expand="True", padx=5)
+
+  NextButton = Button(Window1, text="Siguiente", bg="#C2E7C1", command=lambda: PassToWindow2(root, Window1, VariableRandom, VariableLoad, RuteText, WidthText, HeightText, PercentageText, CoordsTextBox, OriginXText, OriginYText, FinishXText, FinishYText))
+  NextButton.pack(side=BOTTOM, expand="True", padx=5)
 
   # Frame de la izquierda
   Frame1 = Frame(Frame3)
@@ -136,7 +139,6 @@ def FirstWindow(root, Window1):
 # En la segunda ventana se muestra el mapa interactivo.
 # Se podrá editar los obstáculos y puntos de partida y llegada.
 def SecondWindow(root, window2, maps):
-  
 
   # Para ver el mapa generado antes de implementar la interfaz
   Frame0 = Frame(window2)
@@ -165,7 +167,7 @@ def SecondWindow(root, window2, maps):
   Frame2 = Frame(window2)
   Frame2.pack(side=BOTTOM)
 
-  NextButton = Button(Frame2, text="Siguiente", bg="#C2E7C1") # Implementar la siguiente ventana
+  NextButton = Button(Frame2, text="Siguiente", bg="#C2E7C1", command=lambda: PassToWindow3(root, window2, maps)) # Implementar la siguiente ventana
   NextButton.pack(side=RIGHT, expand="True",fill=BOTH, padx=5)
 
   ExitButton = Button(Frame2, text="Salir del programa", bg="#E49795", command=ExitProgram)
@@ -185,7 +187,60 @@ def SecondWindow(root, window2, maps):
       for c in range (0, maps[0].h_size):
         Draw_Map(Frame1,maps, r, c)
   
+
+def ThirdWindow(root, Window3, maps):
+  VariableEvaluate = BooleanVar() # True -> Evaluar todas las func. False -> Evaluar seleccion
+  VariableDirections = BooleanVar() # True -> Todas las direcciones. False -> Elegir
+  VariableEvaluate.set(True)
+  VariableDirections.set(True)
+
+  # Botones en la parte inferior
+  ExitButton = Button(Window3, text="Salir del programa", bg="#E49795", command=ExitProgram)
+  ExitButton.pack(side=BOTTOM, expand="True", padx=5)
+
+  NextButton = Button(Window3, text="Siguiente", bg="#C2E7C1") # Implementar pantalla de muestra de resultados
+  NextButton.pack(side=BOTTOM, expand="True", padx=5)
   
+  # Estructura superior de la ventana
+  Frame1 = Frame (Window3)
+  Frame1.pack(side=TOP)
+  
+  # Direcciones
+  DirectionsLabel = Label(Frame1, text="Definir el número de direcciones")
+  DirectionsLabel.config(font=('Bookman', 20))
+  DirectionsLabel.grid(row=0, columnspan=4, sticky=N, pady=10, padx=10)
+
+  EvaluateAllDirectionsButton = Radiobutton(Frame1, text="Evaluar todas", font=('Courier',16), variable=VariableDirections, value=True)
+  EvaluateAllDirectionsButton.grid(row=2, sticky=N, column=1, padx=5)
+
+  EvaluateSelectionDirectionsButton = Radiobutton(Frame1, text="Evaluar Seleccion", font=('Courier',16), variable=VariableDirections, value=False)
+  EvaluateSelectionDirectionsButton.grid(row=2, sticky=N, column=3, padx=5)
+
+  Directions4 = IntVar()
+  Directions8 = IntVar()
+  Checkbutton(Frame1, text="4 direcciones", variable=Directions4).grid(row=3, sticky=N, column=3, padx=2)
+  Checkbutton(Frame1, text="8 direcciones", variable=Directions8).grid(row=4, sticky=N, column=3, padx=2)
+
+  # Funciones
+  FunctionsLabel = Label(Frame1, text="Definir función(es) heurística(s)")
+  FunctionsLabel.config(font=('Bookman', 20))
+  FunctionsLabel.grid(row=10, columnspan=4, sticky=N, pady=10, padx=10)
+  Label(Frame1, text="(Solo se aplicarán las correctas\n según el número de direcciones seleccionado)").grid(row=11, sticky=N, columnspan=4, pady=2)
+
+  EvaluateAllButton = Radiobutton(Frame1, text="Evaluar todas", font=('Courier',16), variable=VariableEvaluate, value=True)
+  EvaluateAllButton.grid(row=12, sticky=N, column=1, padx=5)
+
+  EvaluateSelectionButton = Radiobutton(Frame1, text="Evaluar selección", font=('Courier',16), variable=VariableEvaluate, value=False)
+  EvaluateSelectionButton.grid(row=12, sticky=N, column=3, padx=5)
+
+  Function1 = IntVar()
+  Function2 = IntVar()
+  Function3 = IntVar()
+  Checkbutton(Frame1, text="Funcion 1", variable=Function1).grid(row=13, sticky=N, column=3, padx=2)
+  Checkbutton(Frame1, text="Funcion 2", variable=Function2).grid(row=14, sticky=N, column=3, padx=2)
+  Checkbutton(Frame1, text="Funcion 3", variable=Function3).grid(row=15, sticky=N, column=3, padx=2)
+  
+
 # Aquí se reciben los datos de la ventana 1. 
 # Con esto, se genera el mapa con la info introducida
 def PassToWindow2(root,window1,VariableRandom, VariableLoad, RuteText, WidthText, HeightText, PercentageText, CoordsTextBox, OriginXText, OriginYText, FinishXText, FinishYText):
@@ -238,6 +293,14 @@ def PassToWindow2(root,window1,VariableRandom, VariableLoad, RuteText, WidthText
   Window2.title("Estrategias de búsqueda")
   Window2.geometry("500x500")
   SecondWindow(root, Window2, maps)
+
+# Se reciben los datos de la ventana 2 y se genera la tercera ventana
+def PassToWindow3(root, window2, maps):
+  window2.destroy()
+  window3 = Toplevel(root)
+  window3.title("Estrategias de búsqueda")
+  window3.geometry("500x500")
+  ThirdWindow(root, window3, maps)
 
 # Funcion para leer el mapa desde el txt
 def ReadMap(RuteText):
