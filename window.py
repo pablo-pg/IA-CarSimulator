@@ -236,8 +236,8 @@ def ThirdWindow(root, Window3, maps):
   Function1 = IntVar()
   Function2 = IntVar()
   Function3 = IntVar()
-  Checkbutton(Frame1, text="Funcion 1", variable=Function1).grid(row=13, sticky=N, column=3, padx=2)
-  Checkbutton(Frame1, text="Funcion 2", variable=Function2).grid(row=14, sticky=N, column=3, padx=2)
+  Checkbutton(Frame1, text="Distancia Manhatan", variable=Function1).grid(row=13, sticky=N, column=3, padx=2)
+  Checkbutton(Frame1, text="Distancia euclídea", variable=Function2).grid(row=14, sticky=N, column=3, padx=2)
   Checkbutton(Frame1, text="Funcion 3", variable=Function3).grid(row=15, sticky=N, column=3, padx=2)
   
 
