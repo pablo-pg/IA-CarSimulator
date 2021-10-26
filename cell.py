@@ -57,17 +57,17 @@ class Cell:
     self.is_finish = False
 
   def euclideanDistance(self, x_finish, y_finish):
-    if x_finish > self.x_pos:
-      x = ((x_finish - self.x_pos)^2)
-    else:
-      x = ((self.x_pos - x_finish)^2)
-    if y_finish > self.y_pos:
-      y = ((y_finish - self.y_pos)^2)
-    else:
-      y = ((self.y_pos - y_finish)^2)
+    x = ((x_finish - self.x_pos) * (x_finish - self.x_pos))
+    y = ((y_finish - self.y_pos) * (y_finish - self.y_pos))
     self.euclidean_distance = math.sqrt(x + y)
+    print(f"X: {self.x_pos} - Y: {self.y_pos}\nX_fin: {x_finish} - Y_fin: {y_finish}\nx = {x}, y = {y}")
     return self.euclidean_distance
 
   def manhattanDistance(self, x_finish, y_finish):
     self.manhattan_distance = (abs(x_finish - self.x_pos) + abs(y_finish - self.y_pos))
     return self.manhattan_distance
+
+
+a = Cell(3, 10, 0, 0, 0)
+print(a.euclideanDistance(3, 3))
+print(a.manhattanDistance(3,3))
