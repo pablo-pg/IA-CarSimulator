@@ -11,18 +11,19 @@ import math
 class Cell:
 
   id = 0          # Cada celda tendrá su propio ID, se empieza a contar desde 0
-  
+  cost_move = 1
+
   def __init__(self, x_pos, y_pos, is_obstacle = False, is_origin = False, is_finish = False):
-      self.id = Cell.id
-      self.x_pos = x_pos              # Posición horizontal de la celda
-      self.y_pos = y_pos              # Posición vertical de la celda
-      self.is_obstacle = is_obstacle  # True si contiene un obstáculo
-      self.is_origin = is_origin
-      self.is_finish = is_finish
-      self.manhattan_distance = math.inf
-      self.euclidean_distance = math.inf
-      
-      Cell.id += 1      # Aumenta el ID conforme se crean más celdas
+    self.id = Cell.id
+    self.x_pos = x_pos              # Posición horizontal de la celda
+    self.y_pos = y_pos              # Posición vertical de la celda
+    self.is_obstacle = is_obstacle  # True si contiene un obstáculo
+    self.is_origin = is_origin
+    self.is_finish = is_finish
+    self.manhattan_distance = math.inf
+    self.euclidean_distance = math.inf
+    
+    Cell.id += 1      # Aumenta el ID conforme se crean más celdas
 
   def isObstacle(self):
     if self.is_obstacle == True:
@@ -68,6 +69,6 @@ class Cell:
     return self.manhattan_distance
 
 
-a = Cell(3, 10, 0, 0, 0)
-print(a.euclideanDistance(3, 3))
-print(a.manhattanDistance(3,3))
+# a = Cell(3, 10, 0, 0, 0)
+# print(a.euclideanDistance(3, 3))
+# print(a.manhattanDistance(3,3))
