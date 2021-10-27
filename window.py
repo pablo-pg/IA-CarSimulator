@@ -9,6 +9,7 @@ from tkinter import *
 #from buttons import PassToWindow2
 from map import *
 from PIL import Image, ImageTk
+from car import Car
 
 def FirstWindow(root, Window1):
   VariableRandom = BooleanVar() # True - Random, False - Manual
@@ -198,7 +199,7 @@ def ThirdWindow(root, Window3, maps):
   ExitButton = Button(Window3, text="Salir del programa", bg="#E49795", command=ExitProgram)
   ExitButton.pack(side=BOTTOM, expand="True", padx=5)
 
-  NextButton = Button(Window3, text="Siguiente", bg="#C2E7C1") # Implementar pantalla de muestra de resultados
+  NextButton = Button(Window3, text="Siguiente", bg="#C2E7C1", command=lambda: PassToWindow4(root, Window3, maps)) # Implementar pantalla de muestra de resultados
   NextButton.pack(side=BOTTOM, expand="True", padx=5)
   
   # Estructura superior de la ventana
@@ -240,6 +241,11 @@ def ThirdWindow(root, Window3, maps):
   Checkbutton(Frame1, text="Distancia euclídea", variable=Function2).grid(row=14, sticky=N, column=3, padx=2)
   Checkbutton(Frame1, text="Funcion 3", variable=Function3).grid(row=15, sticky=N, column=3, padx=2)
   
+def FourthWindow(root, Window4, maps):
+  Frame0 = Frame(Window4)
+  Frame0.pack(side=TOP)
+  maps[0].print()
+
 
 # Aquí se reciben los datos de la ventana 1. 
 # Con esto, se genera el mapa con la info introducida
@@ -301,6 +307,15 @@ def PassToWindow3(root, window2, maps):
   window3.title("Estrategias de búsqueda")
   window3.geometry("500x500")
   ThirdWindow(root, window3, maps)
+
+def PassToWindow4(root, window3, maps):
+  car1 = Car(maps[0]) # Cuando funcione pasarle las variables
+  car1.algoritm()
+  window3.destroy()
+  window4 = Toplevel(root)
+  window4.title("Estrategias de búsqueda")
+  window4.geometry("500x500")
+  FourthWindow(root, window3, maps)
 
 # Funcion para leer el mapa desde el txt
 def ReadMap(RuteText):

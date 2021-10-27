@@ -11,7 +11,7 @@ import math
 class Cell:
 
   id = 0          # Cada celda tendrá su propio ID, se empieza a contar desde 0
-  cost_move = 1
+  move_cost = 1
 
   def __init__(self, x_pos, y_pos, is_obstacle = False, is_origin = False, is_finish = False):
     self.id = Cell.id
