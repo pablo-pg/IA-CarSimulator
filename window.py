@@ -268,7 +268,7 @@ def PassToWindow2(root,window1,VariableRandom, VariableLoad, RuteText, WidthText
 
   InputValue=CoordsTextBox.get("1.0","end-1c")
 
-  print("Cuadro de texto: ",InputValue)
+  # print("Cuadro de texto: ",InputValue)
 
   #print("Prueba: " + str(VariableRandom_info) + " " + str(VariableLoad_info) + " " + str(RuteText_info) + " " + str(WidthText_info) + " " + str(HeightText_info) + " " + str(PercentageText_info) + " " + str(CoordsText_info))
   

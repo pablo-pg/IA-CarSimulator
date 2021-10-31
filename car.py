@@ -6,6 +6,7 @@
 #
 # Clase Car. Se ocupará de todo el algoritmo y lo referido al movimiento del vehiculo.
 from cell import Cell
+from map import Map
 from node import Node
 
 # Funcion 1 = Manhatan
@@ -25,9 +26,9 @@ class Car:
     start = Cell(map.x_origin, map.y_origin, False, True, False)
     end = Cell(map.x_end, map.y_end, False, False, True)
 
-    start_node = Node(None, start)
+    start_node = Node(start)
     start_node.G = start_node.H = start_node.F = 0
-    end_node = Node(None, end)
+    end_node = Node(end)
     end_node.G = end_node.H = end_node.F = 0
     
     open_list = []
@@ -60,14 +61,17 @@ class Car:
       children = []
       for new_position in [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, -1), (-1, 1), (1, -1), (1, 1)]: # Adjacent squares
         # Get node position
-        node_position = (current_node.position[0] + new_position[0], current_node.position[1] + new_position[1])
+        # node_position = (current_node.position[0] + new_position[0], current_node.position[1] + new_position[1])
+        node_position = (current_node.cell.x_pos + new_position[0], current_node.cell.y_pos + new_position[1])
 
         # Make sure within range
         if node_position[0] > (map.v_size - 1) or node_position[0] < 0 or node_position[1] > (map.h_size -1) or node_position[1] < 0:
             continue
 
         # Make sure walkable terrain
-        if map[node_position[0]][node_position[1]] != 0:
+        # if map[node_position[0]][node_position[1]] != 0:
+        print (node_position)
+        if map.matrix[map.pos(node_position[0], node_position[1])].isObstacle() == False:  # False si no es un obstaculo
             continue
 
         # Create new node
@@ -99,7 +103,10 @@ class Car:
         open_list.append(child)     
       
     # Hacer un throw por si no hay camino
-    raise ValueError('No hay camino')
+    if len(closed_list) == 0:
+      raise ValueError('No hay camino')
+    else:
+      print(closed_list)
 
     # Controlar los límites del mapa
     # Ver que la casilla no está ocupada por un obstáculo
