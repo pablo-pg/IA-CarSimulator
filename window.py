@@ -398,10 +398,10 @@ def ReadMap(RuteText):
       # print("X obstaculo: ", XCoord, "Y obstaculo: ", YCoord)
       # XCoord=int(XCoord)
       # YCoord=int(YCoord)
-      print(obstacles)
+      # print(obstacles)
       map1.SetObstacle(XCoord, YCoord)
       # print(f"Añadido en {XCoord},{YCoord}")
-      map1.obsCount()
+      # map1.obsCount()
     else: # Lee el resto de obstáculos
       lettercount = 0
       XCoord=""
@@ -420,10 +420,10 @@ def ReadMap(RuteText):
       # print("X obstaculo: ", XCoord, "Y obstaculo: ", YCoord)
       # XCoord=int(XCoord)
       # YCoord=int(YCoord)
-      print(obstacles)
+      # print(obstacles)
       map1.SetObstacle(XCoord, YCoord)
       # print(f"Añadido en {XCoord},{YCoord}")
-      map1.obsCount()
+      # map1.obsCount()
       # map1.print()
     linecount += 1
   return map1
