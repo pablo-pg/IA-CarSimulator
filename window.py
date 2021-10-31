@@ -26,7 +26,7 @@ def FirstWindow(root, Window1):
   HeightText.set(10)
 
   PercentageText = IntVar()
-  PercentageText.set(5)
+  PercentageText.set(25)
 
   OriginXText = IntVar()
   OriginXText.set(0)
@@ -34,9 +34,9 @@ def FirstWindow(root, Window1):
   OriginYText.set(0)
 
   FinishXText = IntVar()
-  FinishXText.set(3)
+  FinishXText.set(7)
   FinishYText = IntVar()
-  FinishYText.set(3)
+  FinishYText.set(7)
    
   # Frame que contiene al de la izq y dcha
   Frame3 = Frame(Window1)
@@ -310,7 +310,7 @@ def PassToWindow3(root, window2, maps):
 
 def PassToWindow4(root, window3, maps):
   car1 = Car(maps[0]) # Cuando funcione pasarle las variables
-  car1.algoritm()
+  car1.algorithm()
   window3.destroy()
   window4 = Toplevel(root)
   window4.title("Estrategias de búsqueda")
@@ -395,12 +395,12 @@ def ReadMap(RuteText):
       obstacles.append([XCoord, YCoord])
       # print("Lettercount: ", lettercount)
       # print("Linecount: ", linecount)
-      print("X obstaculo: ", XCoord, "Y obstaculo: ", YCoord)
+      # print("X obstaculo: ", XCoord, "Y obstaculo: ", YCoord)
       # XCoord=int(XCoord)
       # YCoord=int(YCoord)
       print(obstacles)
       map1.SetObstacle(XCoord, YCoord)
-      print(f"Añadido en {XCoord},{YCoord}")
+      # print(f"Añadido en {XCoord},{YCoord}")
       map1.obsCount()
     else: # Lee el resto de obstáculos
       lettercount = 0
@@ -417,12 +417,12 @@ def ReadMap(RuteText):
       obstacles.append([XCoord, YCoord])
       # print("Lettercount: ", lettercount)
       # print("Linecount: ", linecount)
-      print("X obstaculo: ", XCoord, "Y obstaculo: ", YCoord)
+      # print("X obstaculo: ", XCoord, "Y obstaculo: ", YCoord)
       # XCoord=int(XCoord)
       # YCoord=int(YCoord)
       print(obstacles)
       map1.SetObstacle(XCoord, YCoord)
-      print(f"Añadido en {XCoord},{YCoord}")
+      # print(f"Añadido en {XCoord},{YCoord}")
       map1.obsCount()
       # map1.print()
     linecount += 1
@@ -447,9 +447,9 @@ def ReadObstacles(InputValue, map1):
     XCoord = int(XCoord)
     YCoord = int(YCoord)
     #obstacles.append([XCoord, YCoord])
-    print("Lettercount: ", lettercount)
-    print("Linecount: ", linecount)
-    print("X obstaculo: ", XCoord, "Y obstaculo: ", YCoord)
+    # print("Lettercount: ", lettercount)
+    # print("Linecount: ", linecount)
+    # print("X obstaculo: ", XCoord, "Y obstaculo: ", YCoord)
     #print(obstacles)
     #print("Prueba: ",XCoord >= map1.h_size, YCoord >= map1.v_size,XCoord < 0,YCoord < 0)
     if (XCoord >= map1.h_size) | (YCoord >= map1.v_size):
@@ -458,7 +458,7 @@ def ReadObstacles(InputValue, map1):
       print(f"Obstaculo fuera de rango: {XCoord},{YCoord}")
     else:
       map1.SetObstacle(XCoord, YCoord)
-      print(f"Añadido en {XCoord},{YCoord}")
+      # print(f"Añadido en {XCoord},{YCoord}")
       #map1.obsCount()
     # map1.print()
     linecount += 1

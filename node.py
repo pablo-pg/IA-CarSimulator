@@ -13,4 +13,4 @@ class Node:
     self.F = 0
   
   def __eq__(self, other):
-    return self.position == other.position
+    return self.cell.id == other.cell.id

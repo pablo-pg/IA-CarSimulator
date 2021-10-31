@@ -39,7 +39,7 @@ class Car:
       current_node = open_list[0]
       current_index = 0
       for index, item in enumerate(open_list):
-        if item.f < current_node.f:
+        if item.F < current_node.F:
           current_node = item
           current_index = index
       
@@ -83,11 +83,11 @@ class Car:
             continue
 
         # Create the f, g, and h values
-        child.G = current_node.G + 1
+        child.G = current_node.G + Cell.move_cost
         if self.function == 1: # Manhatan
-          child.H =  
+          child.H = child.cell.manhattanDistance(end.x_pos, end.y_pos)
         elif self.function == 2: # Euclidea
-          child.H
+          child.H = child.cell.euclideanDistance(end.x_pos, end.y_pos)
         child.f = child.g + child.h
 
         # Child is already in the open list
@@ -109,12 +109,3 @@ class Car:
   def algorithm(self):
     path = self.astar(self.map)
     print(path)
-
-  def f(self):
-    return self.heuristic() + self.g()
-
-  def g(self, celda):
-    pass
-
-  def heuristic(self):
-    pass
