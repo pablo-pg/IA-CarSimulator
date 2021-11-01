@@ -328,13 +328,13 @@ def PassToWindow4(root, window3, maps, VariableEvaluate, VariableDirections, Dir
     if (VariableEvaluate.get()): # Evaluar todas las funciones
       print("Direcciones: ", VariableDirections.get(), ", Evaluate: ", VariableEvaluate.get())
       car_AD_AF_1 = Car(maps[0], 4, 1)
-      car_AD_AF_1.algorithm()
+      car_AD_AF_1.algorithm("car_AD_AF_1")
       car_AD_AF_2 = Car(maps[0], 8, 1)
-      car_AD_AF_2.algorithm()
+      car_AD_AF_2.algorithm("car_AD_AF_2")
       car_AD_AF_3 = Car(maps[0], 4, 2)
-      car_AD_AF_3.algorithm()
+      car_AD_AF_3.algorithm("car_AD_AF_3")
       car_AD_AF_4 = Car(maps[0], 8, 2)
-      car_AD_AF_4.algorithm()
+      car_AD_AF_4.algorithm("car_AD_AF_4")
     else: # Evaluar seleccion
       print("Direcciones: ", VariableDirections.get(), ", Evaluate: ", VariableEvaluate.get())
       if (Function1.get()): # Function 1 seleccionada

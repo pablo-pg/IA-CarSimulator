@@ -9,6 +9,7 @@ from cell import Cell
 from map import Map
 from node import Node
 import time
+from PIL import Image
 
 # Funcion 1 = Manhatan
 # Funcion 2 = Euclidea
@@ -40,11 +41,11 @@ class Car:
     closed_list = []
 
     open_list.append(start_node)
-    print("Star node: ", start_node.cell.x_pos, start_node.cell.y_pos)
+    #print("Star node: ", start_node.cell.x_pos, start_node.cell.y_pos)
 
     while len(open_list) > 0:
-      print("NUEVA ITERACIÓN")
-      print("Tamaño open_list: ", len(open_list))
+      #print("NUEVA ITERACIÓN")
+      #print("Tamaño open_list: ", len(open_list))
       current_node = open_list[0]
       current_index = 0
       for index, item in enumerate(open_list):
@@ -69,27 +70,27 @@ class Car:
       children = []
       # new_node = Node(start_node.cell)
       for new_position in self.directions: # Adjacent squares
-        print("\tNew_position: ", new_position[0], new_position[1])
-        print("\tCurrent node: ", current_node.cell.x_pos, current_node.cell.y_pos)
+        #print("\tNew_position: ", new_position[0], new_position[1])
+        #print("\tCurrent node: ", current_node.cell.x_pos, current_node.cell.y_pos)
         # Calcular el siguiente candidato (de paso)
         node_position = (current_node.cell.x_pos + new_position[0], current_node.cell.y_pos + new_position[1])
-        print("\tPosicion nueva en mapa: ", node_position)
+        #print("\tPosicion nueva en mapa: ", node_position)
 
         # Comprobamos que no se sale del mapa
-        print("Primero: ", node_position[0] <= (map.h_size - 1))
-        print("Segundo: ", node_position[0] >= 0)
-        print("Tercero: ", node_position[1] <= (map.v_size -1))
-        print("Cuarto: ", node_position[1] >= 0)
+        #print("Primero: ", node_position[0] <= (map.h_size - 1))
+        #print("Segundo: ", node_position[0] >= 0)
+        #print("Tercero: ", node_position[1] <= (map.v_size -1))
+        #print("Cuarto: ", node_position[1] >= 0)
         if node_position[0] <= (map.h_size - 1) and node_position[0] >= 0 and node_position[1] <= (map.v_size -1) and node_position[1] >= 0:
-          print("\t\tNode_position(81): ", node_position)
+          #print("\t\tNode_position(81): ", node_position)
           # Se mira si no es un obstáculo
-          print ("\t\tObstaculo: ", map.matrix[map.pos(node_position[0], node_position[1])].isObstacle())
+          #print ("\t\tObstaculo: ", map.matrix[map.pos(node_position[0], node_position[1])].isObstacle())
           if map.matrix[map.pos(node_position[0], node_position[1])].isObstacle() == False:  # False si no es un obstaculo     
-            print("\tNo es obstaculo")
+            #print("\tNo es obstaculo")
             new_cell = Cell(node_position[0], node_position[1])
-            new_node = Node(new_cell, current_node.cell)
+            new_node = Node(new_cell, current_node)
             children.append(new_node)
-            print(f"\tCandidato encontrado -> #{node_position}")
+            #print(f"\tCandidato encontrado -> #{node_position}")
             # continue
 
         # Create new node
@@ -97,13 +98,13 @@ class Car:
 
         # Append
         # children.append(new_node)
-      if len(children) > 0:
-        print(f"Nodo guardado -> #{children[-1].id}")
+      #if len(children) > 0:
+        #print(f"Nodo guardado -> #{children[-1].id}")
       for child in children:
         # Child is on the closed list
         for closed_child in closed_list:
           if child == closed_child:
-            print("El nodo está en la lista cerrada")
+            #print("El nodo está en la lista cerrada")
             continue
           # else: print("DEBE PARAR")
 
@@ -114,7 +115,7 @@ class Car:
         elif self.function == 2: # Euclidea
           child.H = child.cell.euclideanDistance(end.x_pos, end.y_pos)
         child.F = child.G + child.H
-        print(f"El valor de F es de {child.F}")
+        #print(f"El valor de F es de {child.F}")
         # Child is already in the open list
         for open_node in open_list:
           if child == open_node and child.G > open_node.G:
@@ -122,7 +123,7 @@ class Car:
             continue
 
         # Expandimos el arbol (Añadimos el hijo a la lista abierta)
-        print("Valores del child: ",child.cell.x_pos, child.cell.y_pos)
+        #print("Valores del child: ",child.cell.x_pos, child.cell.y_pos)
         open_list.append(child)     
       if child.F > 20:
         raise SystemExit
@@ -139,10 +140,32 @@ class Car:
 
     # Movimiento en función del caso
 
-  def algorithm(self):
+  def algorithm(self, name):
     start_time = time.time()
     path = self.astar(self.map)
     ejecution_time = (time.time() -start_time)
     ejecution_time = format(ejecution_time, '.10E')
     print("Tiempo de ejecucion A*: ",ejecution_time)
     print("Path: ", path)
+    self.print_whole(name, path)
+
+  def print_whole(self, name, path):
+    img = Image.new("RGB", (self.map.h_size, self.map.v_size))
+    pixels = img.load()
+    # Recorre todo el mapa y si no hay obstáculo lo pinta de blanco
+    for i in range(self.map.h_size):
+        for j in range(self.map.v_size):
+            if self.map.matrix[self.map.pos(i,j)].isObstacle() == False:
+                pixels[i,j] = (255,255,255)
+            if self.map.matrix[self.map.pos(i,j)].isOrigin() == True:
+              pixels[i,j] = (194, 231, 193)
+            if self.map.matrix[self.map.pos(i,j)].isFinish() == True:
+              pixels[i,j] = (228, 151, 149)
+            for k in path:
+              if self.map.matrix[self.map.pos(i,j)].x_pos == k[0] and self.map.matrix[self.map.pos(i,j)].y_pos == k[1]:
+                print("k: ", k)
+                print("pos: ", self.map.matrix[self.map.pos(i,j)].x_pos, self.map.matrix[self.map.pos(i,j)].y_pos)
+                pixels[j,i] = (87, 106, 213)
+    # Amplía la imagen
+    img = img.resize((50 * self.map.h_size, 50 * self.map.v_size), Image.NEAREST)
+    img.save(f'{name}.jpg')
