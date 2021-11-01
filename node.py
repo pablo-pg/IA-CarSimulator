@@ -9,16 +9,18 @@ from cell import Cell
 from typing import Type
 
 class Node:
-  def __init__ (self, cell: Type[Cell] = None, parent=None):
-    self.cell = cell # point
+  def __init__ (self, cell_from: Type[Cell], parent=None):
+    # print(type(cell))
+    self.cell = cell_from # point
+    self.cell
     self.parent = parent
     self.H = 0
     self.G = 0
     self.F = 0
-    self.id = None
+    self.id = cell_from.id
   
   def __eq__(self, other):
     return self.cell.id == other.cell.id
   
-  def ManhattanDistance(self, x_pos, y_pos):
-    return self.cell.manhattanDistance(x_pos, y_pos)
+  # def ManhattanDistance(self, x_pos, y_pos):
+  #   return self.cell.manhattanDistance(x_pos, y_pos)

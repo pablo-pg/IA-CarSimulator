@@ -80,11 +80,12 @@ class Car:
             continue
 
         # Create new node
-        new_node = Node(current_node, node_position)
+        new_node = Node(current_node.cell, node_position)
 
         # Append
         children.append(new_node)
       
+
       for child in children:
         # Child is on the closed list
         for closed_child in closed_list:
@@ -93,11 +94,12 @@ class Car:
 
         # Create the f, g, and h values
         child.G = current_node.G + Cell.move_cost
+        # print(type(child.cell))
         if self.function == 1: # Manhatan
-          child.H = child.ManhattanDistance(end.x_pos, end.y_pos)
+          child.H = child.cell.manhattanDistance(end.x_pos, end.y_pos)
         elif self.function == 2: # Euclidea
           child.H = child.cell.euclideanDistance(end.x_pos, end.y_pos)
-        child.f = child.g + child.h
+        child.F = child.G + child.H
 
         # Child is already in the open list
         for open_node in open_list:
