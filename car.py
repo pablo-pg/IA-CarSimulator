@@ -8,16 +8,21 @@
 from cell import Cell
 from map import Map
 from node import Node
+import time
 
 # Funcion 1 = Manhatan
 # Funcion 2 = Euclidea
 
 class Car:
-  def __init__(self, map, directions = 4, function = 1): #, x_origin, y_origin, maps):
+  def __init__(self, map, number_directions = 4, function = 1): #, x_origin, y_origin, maps):
     #self.x_pos = x_origin
     #self.y_pos = y_origin
     #maps = maps
-    self.directions = directions
+    self.number_directions = number_directions
+    if (number_directions == 4):
+      self.directions = [(0, -1), (0, 1), (-1, 0), (1, 0)]
+    if (number_directions == 8):
+      self.directions = [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, -1), (-1, 1), (1, -1), (1, 1)]
     self.function = function
     self.map = map
 
@@ -59,7 +64,7 @@ class Car:
 
       # Se generan los hijos
       children = []
-      for new_position in [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, -1), (-1, 1), (1, -1), (1, 1)]: # Adjacent squares
+      for new_position in self.directions: # Adjacent squares
         # Get node position
         # node_position = (current_node.position[0] + new_position[0], current_node.position[1] + new_position[1])
         node_position = (current_node.cell.x_pos + new_position[0], current_node.cell.y_pos + new_position[1])
@@ -70,8 +75,8 @@ class Car:
 
         # Make sure walkable terrain
         # if map[node_position[0]][node_position[1]] != 0:
-        print (node_position)
-        if map.matrix[map.pos(node_position[0], node_position[1])].isObstacle() == False:  # False si no es un obstaculo
+        print ("Linea 78: ", node_position)
+        if map.matrix[map.pos(node_position[0], node_position[1])].isObstacle() == True:  # False si no es un obstaculo
             continue
 
         # Create new node
@@ -89,7 +94,7 @@ class Car:
         # Create the f, g, and h values
         child.G = current_node.G + Cell.move_cost
         if self.function == 1: # Manhatan
-          child.H = child.cell.manhattanDistance(end.x_pos, end.y_pos)
+          child.H = child.ManhattanDistance(end.x_pos, end.y_pos)
         elif self.function == 2: # Euclidea
           child.H = child.cell.euclideanDistance(end.x_pos, end.y_pos)
         child.f = child.g + child.h
@@ -99,14 +104,15 @@ class Car:
           if child == open_node and child.g > open_node.g:
             continue
 
-        # Add the child to the open list
+        # Expandimos el arbol (Añadimos el hijo a la lista abierta)
         open_list.append(child)     
       
     # Hacer un throw por si no hay camino
     if len(closed_list) == 0:
+      print("No hay camino")
       raise ValueError('No hay camino')
     else:
-      print(closed_list)
+      print("Lista cerrada: ", closed_list)
 
     # Controlar los límites del mapa
     # Ver que la casilla no está ocupada por un obstáculo
@@ -114,5 +120,9 @@ class Car:
     # Movimiento en función del caso
 
   def algorithm(self):
+    start_time = time.time()
     path = self.astar(self.map)
-    print(path)
+    ejecution_time = (time.time() -start_time)
+    ejecution_time = format(ejecution_time, '.10E')
+    print("Tiempo de ejecucion A*: ",ejecution_time)
+    print("Path: ", path)

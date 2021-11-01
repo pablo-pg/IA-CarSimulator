@@ -199,7 +199,7 @@ def ThirdWindow(root, Window3, maps):
   ExitButton = Button(Window3, text="Salir del programa", bg="#E49795", command=ExitProgram)
   ExitButton.pack(side=BOTTOM, expand="True", padx=5)
 
-  NextButton = Button(Window3, text="Siguiente", bg="#C2E7C1", command=lambda: PassToWindow4(root, Window3, maps)) # Implementar pantalla de muestra de resultados
+  NextButton = Button(Window3, text="Siguiente", bg="#C2E7C1", command=lambda: PassToWindow4(root, Window3, maps, VariableEvaluate, VariableDirections, Directions4, Function1, Function2)) # Implementar pantalla de muestra de resultados
   NextButton.pack(side=BOTTOM, expand="True", padx=5)
   
   # Estructura superior de la ventana
@@ -217,16 +217,15 @@ def ThirdWindow(root, Window3, maps):
   EvaluateSelectionDirectionsButton = Radiobutton(Frame1, text="Evaluar Seleccion", font=('Courier',16), variable=VariableDirections, value=False)
   EvaluateSelectionDirectionsButton.grid(row=2, sticky=N, column=3, padx=5)
 
-  Directions4 = IntVar()
-  Directions8 = IntVar()
-  Checkbutton(Frame1, text="4 direcciones", variable=Directions4).grid(row=3, sticky=N, column=3, padx=2)
-  Checkbutton(Frame1, text="8 direcciones", variable=Directions8).grid(row=4, sticky=N, column=3, padx=2)
+  Directions4 = BooleanVar() # True -> 4 Direcciones. False -> 8 Direcciones
+  Radiobutton(Frame1, text="4 direcciones", variable=Directions4, value= True).grid(row=3, sticky=N, column=3, padx=2)
+  Radiobutton(Frame1, text="8 direcciones", variable=Directions4, value= False).grid(row=4, sticky=N, column=3, padx=2)
 
   # Funciones
   FunctionsLabel = Label(Frame1, text="Definir función(es) heurística(s)")
   FunctionsLabel.config(font=('Bookman', 20))
   FunctionsLabel.grid(row=10, columnspan=4, sticky=N, pady=10, padx=10)
-  Label(Frame1, text="(Solo se aplicarán las correctas\n según el número de direcciones seleccionado)").grid(row=11, sticky=N, columnspan=4, pady=2)
+  #Label(Frame1, text="(Solo se aplicarán las correctas\n según el número de direcciones seleccionado)").grid(row=11, sticky=N, columnspan=4, pady=2)
 
   EvaluateAllButton = Radiobutton(Frame1, text="Evaluar todas", font=('Courier',16), variable=VariableEvaluate, value=True)
   EvaluateAllButton.grid(row=12, sticky=N, column=1, padx=5)
@@ -236,12 +235,22 @@ def ThirdWindow(root, Window3, maps):
 
   Function1 = IntVar()
   Function2 = IntVar()
-  Function3 = IntVar()
+  #Function3 = IntVar()
   Checkbutton(Frame1, text="Distancia Manhatan", variable=Function1).grid(row=13, sticky=N, column=3, padx=2)
   Checkbutton(Frame1, text="Distancia euclídea", variable=Function2).grid(row=14, sticky=N, column=3, padx=2)
-  Checkbutton(Frame1, text="Funcion 3", variable=Function3).grid(row=15, sticky=N, column=3, padx=2)
+  #Checkbutton(Frame1, text="Funcion 3", variable=Function3).grid(row=15, sticky=N, column=3, padx=2)
   
 def FourthWindow(root, Window4, maps):
+  # Botones en la parte inferior
+  ExitButton = Button(Window4, text="Salir del programa", bg="#E49795", command=ExitProgram)
+  ExitButton.pack(side=BOTTOM, expand="True", padx=5)
+
+  NextButton = Button(Window4, text="Siguiente", bg="#C2E7C1") # Implementar pantalla de muestra de resultados
+  NextButton.pack(side=BOTTOM, expand="True", padx=5)
+  
+  # Estructura superior de la ventana
+  Frame1 = Frame (Window4)
+  Frame1.pack(side=TOP)
   Frame0 = Frame(Window4)
   Frame0.pack(side=TOP)
   maps[0].print()
@@ -308,14 +317,75 @@ def PassToWindow3(root, window2, maps):
   window3.geometry("500x500")
   ThirdWindow(root, window3, maps)
 
-def PassToWindow4(root, window3, maps):
-  car1 = Car(maps[0]) # Cuando funcione pasarle las variables
-  car1.algorithm()
+def PassToWindow4(root, window3, maps, VariableEvaluate, VariableDirections, Directions4, Function1, Function2):
+  # Notacion
+    # AD - All Directions
+    # AF - All Functions
+    # SD - Selected Directions
+    # SF - Selected Functions
+  # Aquí va la implementación del algoritmo
+  if (VariableDirections.get()): # 4 y 8 direcciones
+    if (VariableEvaluate.get()): # Evaluar todas las funciones
+      print("Direcciones: ", VariableDirections.get(), ", Evaluate: ", VariableEvaluate.get())
+      car_AD_AF_1 = Car(maps[0], 4, 1)
+      car_AD_AF_1.algorithm()
+      car_AD_AF_2 = Car(maps[0], 8, 1)
+      car_AD_AF_2.algorithm()
+      car_AD_AF_3 = Car(maps[0], 4, 2)
+      car_AD_AF_3.algorithm()
+      car_AD_AF_4 = Car(maps[0], 8, 2)
+      car_AD_AF_4.algorithm()
+    else: # Evaluar seleccion
+      print("Direcciones: ", VariableDirections.get(), ", Evaluate: ", VariableEvaluate.get())
+      if (Function1.get()): # Function 1 seleccionada
+        car_AD_SF_1 = Car(maps[0], 4, 1)
+        car_AD_SF_1.algorithm()
+        car_AD_SF_2 = Car(maps[0], 8, 1)
+        car_AD_SF_1.algorithm()
+      if (Function2.get()): # Funcion 2 seleccionada
+        car_AD_SF_3 = Car(maps[0], 4, 2)
+        car_AD_SF_3.algorithm()
+        car_AD_SF_4 = Car(maps[0], 8, 2)     
+        car_AD_SF_4.algorithm()
+  else: # 4 u 8 según el caso
+    if (Directions4.get()): # 4 direcciones
+      if (VariableEvaluate.get()): # Evaluar todas las funciones
+        print("Direcciones: ", VariableDirections.get(), ", Evaluate: ", VariableEvaluate.get(), ", Directions 4: ", Directions4.get())
+        car_SD_SF_1 = Car(maps[0], 4, 1)
+        car_SD_SF_1.algorithm()
+        car_SD_SF_2 = Car(maps[0], 4, 2)
+        car_SD_SF_2.algorithm()
+      else: # Evaluar seleccion
+        if (Function1.get()): # Function 1 seleccionada
+          print("Direcciones: ", VariableDirections.get(), ", Evaluate: ", VariableEvaluate.get(), ", Directions 4: ", Directions4.get(), ", Function 1: ", Function1.get())
+          car_SD_SF_3 = Car(maps[0], 4, 1)
+          car_SD_SF_3.algorithm()
+        if (Function2.get()): # Funcion 2 seleccionada
+          print("Direcciones: ", VariableDirections.get(), ", Evaluate: ", VariableEvaluate.get(), ", Directions 4: ", Directions4.get(), ", Function 2: ", Function2.get())
+          car_SD_SF_4 = Car(maps[0], 4, 2)
+          car_SD_SF_4.algorithm()
+      
+    else: # 8 direcciones
+      if (VariableEvaluate.get()): # Evaluar todas las funciones
+        car_SD_SF_5 = Car(maps[0], 8, 1)
+        car_SD_SF_5.algorithm()
+        car_SD_SF_6 = Car(maps[0], 8, 2)
+        car_SD_SF_6.algorithm()
+      else: # Evaluar seleccion
+        if (Function1.get()): # Function 1 seleccionada
+          car_SD_SF_7 = Car(maps[0], 8, 1)
+          car_SD_SF_7.algorithm()
+        if (Function2.get()): # Funcion 2 seleccionada
+          car_SD_SF_8 = Car(maps[0], 8, 2)
+          car_SD_SF_8.algorithm()
+    
+  #car1 = Car(maps[0]) # Cuando funcione pasarle las variables
+  #car1.algorithm()
   window3.destroy()
   window4 = Toplevel(root)
   window4.title("Estrategias de búsqueda")
   window4.geometry("500x500")
-  FourthWindow(root, window3, maps)
+  FourthWindow(root, window4, maps)
 
 # Funcion para leer el mapa desde el txt
 def ReadMap(RuteText):
