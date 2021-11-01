@@ -163,8 +163,8 @@ class Car:
               pixels[i,j] = (228, 151, 149)
             for k in path:
               if self.map.matrix[self.map.pos(i,j)].x_pos == k[0] and self.map.matrix[self.map.pos(i,j)].y_pos == k[1]:
-                print("k: ", k)
-                print("pos: ", self.map.matrix[self.map.pos(i,j)].x_pos, self.map.matrix[self.map.pos(i,j)].y_pos)
+                #print("k: ", k)
+                #print("pos: ", self.map.matrix[self.map.pos(i,j)].x_pos, self.map.matrix[self.map.pos(i,j)].y_pos)
                 pixels[j,i] = (87, 106, 213)
     # Amplía la imagen
     img = img.resize((50 * self.map.h_size, 50 * self.map.v_size), Image.NEAREST)
