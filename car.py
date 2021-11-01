@@ -31,18 +31,20 @@ class Car:
     start = Cell(map.x_origin, map.y_origin, False, True, False)
     end = Cell(map.x_end, map.y_end, False, False, True)
 
-    start_node = Node(start)
+    start_node = Node(start, None)
     start_node.G = start_node.H = start_node.F = 0
-    end_node = Node(end)
+    end_node = Node(end, None)
     end_node.G = end_node.H = end_node.F = 0
     
     open_list = []
     closed_list = []
 
     open_list.append(start_node)
+    print("Star node: ", start_node.cell.x_pos, start_node.cell.y_pos)
 
     while len(open_list) > 0:
       print("NUEVA ITERACIÓN")
+      print("Tamaño open_list: ", len(open_list))
       current_node = open_list[0]
       current_index = 0
       for index, item in enumerate(open_list):
@@ -54,33 +56,41 @@ class Car:
       open_list.pop(current_index)
       closed_list.append(current_node)
       
-      # Se busca el camino
-      if current_node == end_node:
+      # Se mira si ha llegado al final
+      if current_node.cell.x_pos == end_node.cell.x_pos and current_node.cell.y_pos == end_node.cell.y_pos:
         path = []
         current = current_node
         while current is not None:
-          path.append(current.position)
+          path.append((current.cell.x_pos, current.cell.y_pos))
           current = current.parent
-        return path[::-1] # Return reversed path
+        return path[::-1] # Se devuelve el camino ordenado
 
       # Se generan los hijos
       children = []
       # new_node = Node(start_node.cell)
       for new_position in self.directions: # Adjacent squares
-        # Get node position
+        print("\tNew_position: ", new_position[0], new_position[1])
+        print("\tCurrent node: ", current_node.cell.x_pos, current_node.cell.y_pos)
+        # Calcular el siguiente candidato (de paso)
         node_position = (current_node.cell.x_pos + new_position[0], current_node.cell.y_pos + new_position[1])
+        print("\tPosicion nueva en mapa: ", node_position)
 
-        # Make sure within range
-        if node_position[0] > (map.v_size - 1) or node_position[0] < 0 or node_position[1] > (map.h_size -1) or node_position[1] < 0:
-            continue
-
-        # Make sure walkable terrain
-        # print ("Linea 78: ", node_position)
-        if map.matrix[map.pos(node_position[0], node_position[1])].isObstacle() == False:  # False si no es un obstaculo
-          new_node = Node(current_node.cell, node_position)
-          children.append(new_node)
-          print(f"Candidato encontrado -> #{node_position}")
-          # continue
+        # Comprobamos que no se sale del mapa
+        print("Primero: ", node_position[0] <= (map.h_size - 1))
+        print("Segundo: ", node_position[0] >= 0)
+        print("Tercero: ", node_position[1] <= (map.v_size -1))
+        print("Cuarto: ", node_position[1] >= 0)
+        if node_position[0] <= (map.h_size - 1) and node_position[0] >= 0 and node_position[1] <= (map.v_size -1) and node_position[1] >= 0:
+          print("\t\tNode_position(81): ", node_position)
+          # Se mira si no es un obstáculo
+          print ("\t\tObstaculo: ", map.matrix[map.pos(node_position[0], node_position[1])].isObstacle())
+          if map.matrix[map.pos(node_position[0], node_position[1])].isObstacle() == False:  # False si no es un obstaculo     
+            print("\tNo es obstaculo")
+            new_cell = Cell(node_position[0], node_position[1])
+            new_node = Node(new_cell, current_node.cell)
+            children.append(new_node)
+            print(f"\tCandidato encontrado -> #{node_position}")
+            # continue
 
         # Create new node
         # new_node = Node(current_node.cell, node_position)
@@ -107,15 +117,18 @@ class Car:
         print(f"El valor de F es de {child.F}")
         # Child is already in the open list
         for open_node in open_list:
-          if child != open_node and child.G > open_node.G:
-            open_list.append(child)    
+          if child == open_node and child.G > open_node.G:
+            #open_list.append(child)    
             continue
 
         # Expandimos el arbol (Añadimos el hijo a la lista abierta)
-        # open_list.append(child)     
-      
+        print("Valores del child: ",child.cell.x_pos, child.cell.y_pos)
+        open_list.append(child)     
+      if child.F > 20:
+        raise SystemExit
+
     # Hacer un throw por si no hay camino
-    if len(closed_list) == 1:
+    if len(closed_list) == 0:
       print("No hay camino")
       raise ValueError('No hay camino')
     else:
