@@ -42,6 +42,7 @@ class Car:
     open_list.append(start_node)
 
     while len(open_list) > 0:
+      print("NUEVA ITERACIÓN")
       current_node = open_list[0]
       current_index = 0
       for index, item in enumerate(open_list):
@@ -64,9 +65,9 @@ class Car:
 
       # Se generan los hijos
       children = []
+      # new_node = Node(start_node.cell)
       for new_position in self.directions: # Adjacent squares
         # Get node position
-        # node_position = (current_node.position[0] + new_position[0], current_node.position[1] + new_position[1])
         node_position = (current_node.cell.x_pos + new_position[0], current_node.cell.y_pos + new_position[1])
 
         # Make sure within range
@@ -74,43 +75,47 @@ class Car:
             continue
 
         # Make sure walkable terrain
-        # if map[node_position[0]][node_position[1]] != 0:
-        print ("Linea 78: ", node_position)
-        if map.matrix[map.pos(node_position[0], node_position[1])].isObstacle() == True:  # False si no es un obstaculo
-            continue
+        # print ("Linea 78: ", node_position)
+        if map.matrix[map.pos(node_position[0], node_position[1])].isObstacle() == False:  # False si no es un obstaculo
+          new_node = Node(current_node.cell, node_position)
+          children.append(new_node)
+          print(f"Candidato encontrado -> #{node_position}")
+          # continue
 
         # Create new node
-        new_node = Node(current_node.cell, node_position)
+        # new_node = Node(current_node.cell, node_position)
 
         # Append
-        children.append(new_node)
-      
-
+        # children.append(new_node)
+      if len(children) > 0:
+        print(f"Nodo guardado -> #{children[-1].id}")
       for child in children:
         # Child is on the closed list
         for closed_child in closed_list:
           if child == closed_child:
+            print("El nodo está en la lista cerrada")
             continue
+          # else: print("DEBE PARAR")
 
         # Create the f, g, and h values
         child.G = current_node.G + Cell.move_cost
-        # print(type(child.cell))
         if self.function == 1: # Manhatan
           child.H = child.cell.manhattanDistance(end.x_pos, end.y_pos)
         elif self.function == 2: # Euclidea
           child.H = child.cell.euclideanDistance(end.x_pos, end.y_pos)
         child.F = child.G + child.H
-
+        print(f"El valor de F es de {child.F}")
         # Child is already in the open list
         for open_node in open_list:
-          if child == open_node and child.g > open_node.g:
+          if child != open_node and child.G > open_node.G:
+            open_list.append(child)    
             continue
 
         # Expandimos el arbol (Añadimos el hijo a la lista abierta)
-        open_list.append(child)     
+        # open_list.append(child)     
       
     # Hacer un throw por si no hay camino
-    if len(closed_list) == 0:
+    if len(closed_list) == 1:
       print("No hay camino")
       raise ValueError('No hay camino')
     else:
