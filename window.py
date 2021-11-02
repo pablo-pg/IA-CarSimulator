@@ -285,18 +285,18 @@ def PassToWindow2(root,window1,VariableRandom, VariableLoad, RuteText, WidthText
   maps = []
   if (VariableLoad_info==True):
     # Se lee el mapa y lo retorna a una variable
-    print("Lee el mapa")
+    # print("Lee el mapa")
     map1 = ReadMap(RuteText_info)
   else: # Se genera con los datos pasados
     # Condiciones de los obtaculos
     if (VariableRandom_info):
-      print("Random")
+      # print("Random")
       map1 = Map(WidthText_info, HeightText_info, OriginXText_info, OriginYText_info, FinishXText_info, FinishYText_info)
       map1.setDistances()
       map1.generateRandommap(20)
     else: # Se entran manual
       # Si me sale bien lo de clickar, quitamos esta opcion
-      print("Manual")
+      # print("Manual")
       map1 = Map(WidthText_info, HeightText_info, OriginXText_info, OriginYText_info, FinishXText_info, FinishYText_info)
       map1 = ReadObstacles(InputValue, map1)
       map1.setDistances()
@@ -326,7 +326,7 @@ def PassToWindow4(root, window3, maps, VariableEvaluate, VariableDirections, Dir
   # Aquí va la implementación del algoritmo
   if (VariableDirections.get()): # 4 y 8 direcciones
     if (VariableEvaluate.get()): # Evaluar todas las funciones
-      print("Direcciones: ", VariableDirections.get(), ", Evaluate: ", VariableEvaluate.get())
+      # print("Direcciones: ", VariableDirections.get(), ", Evaluate: ", VariableEvaluate.get())
       car_AD_AF_1 = Car(maps[0], 4, 1)
       car_AD_AF_1.algorithm("car_AD_AF_1")
       car_AD_AF_2 = Car(maps[0], 8, 1)
@@ -336,12 +336,12 @@ def PassToWindow4(root, window3, maps, VariableEvaluate, VariableDirections, Dir
       car_AD_AF_4 = Car(maps[0], 8, 2)
       car_AD_AF_4.algorithm("car_AD_AF_4")
     else: # Evaluar seleccion
-      print("Direcciones: ", VariableDirections.get(), ", Evaluate: ", VariableEvaluate.get())
+      # print("Direcciones: ", VariableDirections.get(), ", Evaluate: ", VariableEvaluate.get())
       if (Function1.get()): # Function 1 seleccionada
         car_AD_SF_1 = Car(maps[0], 4, 1)
         car_AD_SF_1.algorithm()
         car_AD_SF_2 = Car(maps[0], 8, 1)
-        car_AD_SF_1.algorithm()
+        car_AD_SF_2.algorithm()
       if (Function2.get()): # Funcion 2 seleccionada
         car_AD_SF_3 = Car(maps[0], 4, 2)
         car_AD_SF_3.algorithm()
@@ -350,18 +350,18 @@ def PassToWindow4(root, window3, maps, VariableEvaluate, VariableDirections, Dir
   else: # 4 u 8 según el caso
     if (Directions4.get()): # 4 direcciones
       if (VariableEvaluate.get()): # Evaluar todas las funciones
-        print("Direcciones: ", VariableDirections.get(), ", Evaluate: ", VariableEvaluate.get(), ", Directions 4: ", Directions4.get())
+        # print("Direcciones: ", VariableDirections.get(), ", Evaluate: ", VariableEvaluate.get(), ", Directions 4: ", Directions4.get())
         car_SD_SF_1 = Car(maps[0], 4, 1)
         car_SD_SF_1.algorithm()
         car_SD_SF_2 = Car(maps[0], 4, 2)
         car_SD_SF_2.algorithm()
       else: # Evaluar seleccion
         if (Function1.get()): # Function 1 seleccionada
-          print("Direcciones: ", VariableDirections.get(), ", Evaluate: ", VariableEvaluate.get(), ", Directions 4: ", Directions4.get(), ", Function 1: ", Function1.get())
+          # print("Direcciones: ", VariableDirections.get(), ", Evaluate: ", VariableEvaluate.get(), ", Directions 4: ", Directions4.get(), ", Function 1: ", Function1.get())
           car_SD_SF_3 = Car(maps[0], 4, 1)
           car_SD_SF_3.algorithm()
         if (Function2.get()): # Funcion 2 seleccionada
-          print("Direcciones: ", VariableDirections.get(), ", Evaluate: ", VariableEvaluate.get(), ", Directions 4: ", Directions4.get(), ", Function 2: ", Function2.get())
+          # print("Direcciones: ", VariableDirections.get(), ", Evaluate: ", VariableEvaluate.get(), ", Directions 4: ", Directions4.get(), ", Function 2: ", Function2.get())
           car_SD_SF_4 = Car(maps[0], 4, 2)
           car_SD_SF_4.algorithm()
       

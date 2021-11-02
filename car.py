@@ -29,6 +29,7 @@ class Car:
 
   # Algoritmo A*
   def astar(self, map):
+    node_explored = 0
     start = Cell(map.x_origin, map.y_origin, False, True, False)
     end = Cell(map.x_end, map.y_end, False, False, True)
 
@@ -41,6 +42,7 @@ class Car:
     closed_list = []
 
     open_list.append(start_node)
+    node_explored += 1
     #print("Star node: ", start_node.cell.x_pos, start_node.cell.y_pos)
 
     while len(open_list) > 0:
@@ -64,6 +66,7 @@ class Car:
         while current is not None:
           path.append((current.cell.x_pos, current.cell.y_pos))
           current = current.parent
+        print(f"{node_explored} nodos explorados")
         return path[::-1] # Se devuelve el camino ordenado
 
       # Se generan los hijos
@@ -119,12 +122,12 @@ class Car:
         # Child is already in the open list
         for open_node in open_list:
           if child == open_node and child.G > open_node.G:
-            #open_list.append(child)    
             continue
 
         # Expandimos el arbol (Añadimos el hijo a la lista abierta)
         #print("Valores del child: ",child.cell.x_pos, child.cell.y_pos)
-        open_list.append(child)     
+        open_list.append(child)
+        node_explored += 1
       if child.F > 20:
         raise SystemExit
 
@@ -135,10 +138,6 @@ class Car:
     else:
       print("Lista cerrada: ", closed_list)
 
-    # Controlar los límites del mapa
-    # Ver que la casilla no está ocupada por un obstáculo
-
-    # Movimiento en función del caso
 
   def algorithm(self, name):
     start_time = time.time()
