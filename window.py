@@ -245,13 +245,13 @@ def FourthWindow(root, Window4, maps):
   ExitButton = Button(Window4, text="Salir del programa", bg="#E49795", command=ExitProgram)
   ExitButton.pack(side=BOTTOM, expand="True", padx=5)
 
-  NextButton = Button(Window4, text="Siguiente", bg="#C2E7C1") # Implementar pantalla de muestra de resultados
-  NextButton.pack(side=BOTTOM, expand="True", padx=5)
+  #NextButton = Button(Window4, text="Siguiente", bg="#C2E7C1") # Implementar pantalla de muestra de resultados
+  #NextButton.pack(side=BOTTOM, expand="True", padx=5)
   
   # Estructura superior de la ventana
-  Label(text="Puede consultar los resultados de la evaluación en la terminal\ny comprobar las imágenes de los mapas en la carpeta de ejecución.")
   Frame0 = Frame(Window4)
   Frame0.pack(side=TOP)
+  Label(Frame0, text="Puede consultar los resultados de la evaluación en la terminal\ny comprobar las imágenes de los mapas en la carpeta de ejecución.", font=('Courier',16), pady=10).pack() 
   maps[0].print()
 
 

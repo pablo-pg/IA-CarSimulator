@@ -128,8 +128,6 @@ class Car:
         #print("Valores del child: ",child.cell.x_pos, child.cell.y_pos)
         open_list.append(child)
         node_explored += 1
-      if child.F > 20:
-        raise SystemExit
 
     # Hacer un throw por si no hay camino
     if len(closed_list) == 0:
