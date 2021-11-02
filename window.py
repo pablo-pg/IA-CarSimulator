@@ -249,8 +249,7 @@ def FourthWindow(root, Window4, maps):
   NextButton.pack(side=BOTTOM, expand="True", padx=5)
   
   # Estructura superior de la ventana
-  Frame1 = Frame (Window4)
-  Frame1.pack(side=TOP)
+  Label(text="Puede consultar los resultados de la evaluación en la terminal\ny comprobar las imágenes de los mapas en la carpeta de ejecución.")
   Frame0 = Frame(Window4)
   Frame0.pack(side=TOP)
   maps[0].print()
@@ -328,56 +327,72 @@ def PassToWindow4(root, window3, maps, VariableEvaluate, VariableDirections, Dir
     if (VariableEvaluate.get()): # Evaluar todas las funciones
       # print("Direcciones: ", VariableDirections.get(), ", Evaluate: ", VariableEvaluate.get())
       car_AD_AF_1 = Car(maps[0], 4, 1)
+      print("\nDirecciones: 4, Función: Distancia Manhattan")
       car_AD_AF_1.algorithm("car_AD_AF_1")
       car_AD_AF_2 = Car(maps[0], 8, 1)
+      print("\nDirecciones: 8, Función: Distancia Manhattan")
       car_AD_AF_2.algorithm("car_AD_AF_2")
       car_AD_AF_3 = Car(maps[0], 4, 2)
+      print("\nDirecciones: 4, Función: Distancia Euclídea")
       car_AD_AF_3.algorithm("car_AD_AF_3")
       car_AD_AF_4 = Car(maps[0], 8, 2)
+      print("\nDirecciones: 8, Función: Distancia Euclídea")
       car_AD_AF_4.algorithm("car_AD_AF_4")
     else: # Evaluar seleccion
       # print("Direcciones: ", VariableDirections.get(), ", Evaluate: ", VariableEvaluate.get())
       if (Function1.get()): # Function 1 seleccionada
         car_AD_SF_1 = Car(maps[0], 4, 1)
-        car_AD_SF_1.algorithm()
+        print("\nDirecciones: 4, Función: Distancia Manhattan")
+        car_AD_SF_1.algorithm("car_AD_SF_1")
         car_AD_SF_2 = Car(maps[0], 8, 1)
-        car_AD_SF_2.algorithm()
+        print("\nDirecciones: 8, Función: Distancia Manhattan")
+        car_AD_SF_2.algorithm("car_AD_SF_2")
       if (Function2.get()): # Funcion 2 seleccionada
         car_AD_SF_3 = Car(maps[0], 4, 2)
-        car_AD_SF_3.algorithm()
-        car_AD_SF_4 = Car(maps[0], 8, 2)     
-        car_AD_SF_4.algorithm()
+        print("\nDirecciones: 4, Función: Distancia Euclídea")
+        car_AD_SF_3.algorithm("car_AD_SF_3")
+        car_AD_SF_4 = Car(maps[0], 8, 2)
+        print("\nDirecciones: 8, Función: Distancia Euclídea")     
+        car_AD_SF_4.algorithm("car_AD_SF_4")
   else: # 4 u 8 según el caso
     if (Directions4.get()): # 4 direcciones
       if (VariableEvaluate.get()): # Evaluar todas las funciones
         # print("Direcciones: ", VariableDirections.get(), ", Evaluate: ", VariableEvaluate.get(), ", Directions 4: ", Directions4.get())
         car_SD_SF_1 = Car(maps[0], 4, 1)
-        car_SD_SF_1.algorithm()
+        print("\nDirecciones: 4, Función: Distancia Manhattan")
+        car_SD_SF_1.algorithm("car_SD_SF_1")
         car_SD_SF_2 = Car(maps[0], 4, 2)
-        car_SD_SF_2.algorithm()
+        print("\nDirecciones: 4, Función: Distancia Euclídea")
+        car_SD_SF_2.algorithm("car_SD_SF_2")
       else: # Evaluar seleccion
         if (Function1.get()): # Function 1 seleccionada
           # print("Direcciones: ", VariableDirections.get(), ", Evaluate: ", VariableEvaluate.get(), ", Directions 4: ", Directions4.get(), ", Function 1: ", Function1.get())
           car_SD_SF_3 = Car(maps[0], 4, 1)
-          car_SD_SF_3.algorithm()
+          print("\nDirecciones: 4, Función: Distancia Manhattan")
+          car_SD_SF_3.algorithm("car_SD_SF_3")
         if (Function2.get()): # Funcion 2 seleccionada
           # print("Direcciones: ", VariableDirections.get(), ", Evaluate: ", VariableEvaluate.get(), ", Directions 4: ", Directions4.get(), ", Function 2: ", Function2.get())
           car_SD_SF_4 = Car(maps[0], 4, 2)
-          car_SD_SF_4.algorithm()
+          print("\nDirecciones: 4, Función: Distancia Euclídea")
+          car_SD_SF_4.algorithm("car_SD_SF_4")
       
     else: # 8 direcciones
       if (VariableEvaluate.get()): # Evaluar todas las funciones
         car_SD_SF_5 = Car(maps[0], 8, 1)
-        car_SD_SF_5.algorithm()
+        print("\nDirecciones: 8, Función: Distancia Manhattan")
+        car_SD_SF_5.algorithm("car_SD_SF_5")
         car_SD_SF_6 = Car(maps[0], 8, 2)
-        car_SD_SF_6.algorithm()
+        print("\nDirecciones: 8, Función: Distancia Euclídea")
+        car_SD_SF_6.algorithm("car_SD_SF_6")
       else: # Evaluar seleccion
         if (Function1.get()): # Function 1 seleccionada
           car_SD_SF_7 = Car(maps[0], 8, 1)
-          car_SD_SF_7.algorithm()
+          print("\nDirecciones: 8, Función: Distancia Manhattan")
+          car_SD_SF_7.algorithm("car_SD_SF_7")
         if (Function2.get()): # Funcion 2 seleccionada
           car_SD_SF_8 = Car(maps[0], 8, 2)
-          car_SD_SF_8.algorithm()
+          print("\nDirecciones: 8, Función: Distancia Euclídea")
+          car_SD_SF_8.algorithm("car_SD_SF_8")
     
   #car1 = Car(maps[0]) # Cuando funcione pasarle las variables
   #car1.algorithm()
